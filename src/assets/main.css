@@ -1,0 +1,103 @@
+@import './base.css';
+
+.mdc-text-field--textarea textarea,
+.mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    color: var(--color-text) !important;
+}
+
+.mdc-text-field__resizer,
+.mdc-select__menu .mdc-deprecated-list,
+.mdc-autocomplete__menu .mdc-deprecated-list,
+.vacp-format-switch-button {
+    background-color: var(--color-background) !important;
+}
+
+.no-resize .mdc-text-field__resizer {
+    resize: none !important;
+}
+
+.mdc-text-field label,
+.mdc-text-field--disabled .mdc-text-field__input,
+.mdc-text-field--disabled .mdc-text-field__icon--leading,
+.mdc-text-field--disabled .mdc-text-field__icon--trailing,
+.mdc-select__selected-text,
+.mdc-text-field-helper-text {
+    color: var(--color-text) !important;
+}
+
+.mdc-notched-outline__leading,
+.mdc-notched-outline__notch,
+.mdc-notched-outline__trailing,
+.mdc-text-field--disabled .mdc-notched-outline__trailing,
+.mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__leading,
+.mdc-text-field--disabled .mdc-notched-outline__leading,
+.mdc-text-field--disabled .mdc-notched-outline__notch,
+.mdc-text-field--disabled .mdc-notched-outline__trailing {
+    border-color: var(--vt-c-text-dark-2) !important;
+}
+
+.mdc-text-field--disabled .mdc-text-field__icon--leading,
+.mdc-text-field--disabled .mdc-text-field__icon--trailing {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+.mdc-alert.mdc-alert--success {
+    background-color: rgba(15, 157, 88, 0.25) !important;
+}
+
+.mdc-select__dropdown-icon {
+    fill: var(--color-text) !important;
+}
+
+.mdc-divider--horizontal .mdc-divider__text:after,
+.mdc-divider--horizontal .mdc-divider__text:before {
+    background-color: var(--color-text) !important;
+}
+
+input:disabled {
+    cursor: no-drop !important;
+}
+
+.vacp-color-picker {
+    height: 100%;
+    grid-template-rows: 1fr auto auto;
+    background-color: var(--color-background) !important;
+    max-width: 100% !important;
+}
+
+input.vacp-color-input {
+    background-color: var(--color-background) !important;
+    color: var(--color-text) !important;
+}
+
+.vacp-color-space {
+    min-height: calc(var(--vacp-color-space-width)*.6) !important;
+    height: 100% !important;
+}
+
+.hljs {
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.error .mdc-notched-outline.mdc-notched-outline--no-label .mdc-notched-outline__leading,
+.error .mdc-notched-outline__notch,
+.error .mdc-notched-outline__trailing,
+.error .mdc-text-field--disabled .mdc-notched-outline__trailing,
+.error .mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__leading,
+.error .mdc-text-field--disabled .mdc-notched-outline__leading,
+.error .mdc-text-field--disabled .mdc-notched-outline__notch,
+.error .mdc-text-field--disabled .mdc-notched-outline__trailing,
+.error .mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__leading {
+    border-color: red !important;
+}
+
+.error input,
+.error textarea {
+    caret-color: red !important;
+}
+
+.errorHelper * {
+    color: red !important;
+}
