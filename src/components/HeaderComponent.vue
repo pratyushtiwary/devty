@@ -74,7 +74,7 @@ function handleRouteChange() {
         <ui-drawer-header>
             <ui-drawer-title class="colorText title">
                 <RouterLink to="/" class="homeLink">
-                    <span>Devit</span>
+                    <span>Devty</span>
                 </RouterLink>
                 <ui-icon-button icon="first_page" v-show="isMobile" @click="openDrawer = false"></ui-icon-button>
             </ui-drawer-title>
