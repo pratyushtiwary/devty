@@ -29,7 +29,7 @@ onUnmounted(() => {
 watchEffect(() => {
     if (searchVal.value) {
         const all = Object.keys(allRoutes);
-        const regex = new RegExp(searchVal.value, 'g');
+        const regex = new RegExp(searchVal.value.toLowerCase(), 'g');
         let validRoutes: Routes = {};
 
         all.forEach(e => {
@@ -90,6 +90,9 @@ function handleRouteChange() {
                         <ui-icon class="icon" v-if="routes[route].icon">{{ routes[route].icon }}</ui-icon>
                         {{ routes[route].name }}</ui-nav-item>
                 </RouterLink>
+                <div v-if="Object.keys(routes).filter(e => routes[e].visible !== false).length === 0" class="noResults">
+                    No Result Found!
+                </div>
             </ui-nav>
         </ui-drawer-content>
     </ui-drawer>
@@ -147,5 +150,11 @@ function handleRouteChange() {
 .drawer .homeLink {
     color: var(--color-text);
     text-decoration: none;
+}
+
+.noResults {
+    color: var(--color-text);
+    width: 100%;
+    text-align: center;
 }
 </style>

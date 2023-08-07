@@ -11,7 +11,7 @@ const value = ref('');
 function handleChange(newVal: string) {
   if (newVal) {
     const all = Object.keys(allRoutes);
-    const regex = new RegExp(newVal, 'g');
+    const regex = new RegExp(newVal.toLowerCase(), 'g');
     let validRoutes: Routes = {};
 
     all.forEach(e => {
@@ -20,6 +20,7 @@ function handleChange(newVal: string) {
         visible: Boolean(allRoutes[e].name.toLowerCase().match(regex))
       }
     })
+
 
     routes.value = validRoutes
   } else {
@@ -47,9 +48,9 @@ function handleChange(newVal: string) {
           </ui-card-content>
         </RouterLink>
       </ui-card>
-      <div v-if="Object.keys(routes).length === 0">
-        No Result Found!
-      </div>
+    </div>
+    <div v-if="Object.keys(routes).filter(e => routes[e].visible !== false).length === 0" class="noResults">
+      No Result Found!
     </div>
   </main>
 </template>
@@ -99,14 +100,17 @@ main {
 .modules .module .heading {
   font-size: 24px;
   text-align: center;
-  /* max-width: 100%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow-x: hidden; */
 }
 
 .modules .link {
   text-decoration: none;
   color: var(--color-text);
+}
+
+.noResults {
+  color: var(--color-text);
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
 }
 </style>
