@@ -30,7 +30,7 @@ function handleChange(newVal: string) {
 
 <template>
   <main>
-    <h1>Devit</h1>
+    <h1>Devty</h1>
     <div :class="$tt('body1')">
       Your go to place for dev utilities & tools.
     </div>
