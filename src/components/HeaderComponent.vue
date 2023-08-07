@@ -62,7 +62,7 @@ function handleRouteChange() {
 </script>
 
 <template>
-    <ui-top-app-bar v-if="isMobile" content-selector="#app-bar" type="dense" title="Devit" class="appBar">
+    <ui-top-app-bar v-if="isMobile" content-selector="#app-bar" type="dense" title="Devty" class="appBar">
         <template #nav-icon>
             <ui-icon-button icon="menu" @click="openDrawer = true"></ui-icon-button>
         </template>
