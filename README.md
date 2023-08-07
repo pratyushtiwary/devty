@@ -1,6 +1,6 @@
-# Devit
+# Devty
 
-DEVelopers utIlities & Tools.
+Developers Utilities & Tools.
 
 This tool is inspired from [DevUtils](https://devutils.com/)
 
