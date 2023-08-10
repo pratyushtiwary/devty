@@ -6,10 +6,7 @@ import Base64Image from ".";
 import useThrottle from "@/hooks/useThrottle";
 import useDownload from "@/hooks/useDownload";
 import { ref, type Ref, watchEffect } from "vue";
-
-interface BlamUIFile extends File {
-    sourceFile: File,
-}
+import type BalmUIFile from "@/types/file"
 
 const value: Ref<string> = ref('');
 const output: Ref<string> = ref('');
@@ -28,7 +25,7 @@ function clearInput() {
     value.value = "";
 }
 
-async function handleFile(files: BlamUIFile[]) {
+async function handleFile(files: BalmUIFile[]) {
     const file: File = files[0].sourceFile;
     output.value = await Base64Image(file);
     value.value = output.value;

@@ -121,6 +121,10 @@ input.vacp-color-input {
 [placeholder]:empty::before {
     content: attr(placeholder);
     color: var(--vt-c-text-dark-2) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 
 .mdc-text-field--textarea.red textarea,

@@ -47,6 +47,11 @@ const routes: Routes = {
     name: 'JWT Debugger',
     dir: 'JwtDebugger',
     image: 'jwt_icon.svg'
+  },
+  markdown_preview: {
+    name: 'Markdown Preview',
+    dir: 'MarkdownPreview',
+    image: 'markdown_icon.svg'
   }
 }
 

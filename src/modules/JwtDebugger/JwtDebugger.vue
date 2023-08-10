@@ -192,7 +192,7 @@ function clearPayloadInput() {
             <div class="outputArea">
                 <InputOptions label="Header: " @reset="clearHeaderInput" @paste="handlePasteHeader"
                     :copyContent="decodedHeader" />
-                <Input input-type="textarea" placeholder="Enter content to hash..." :class="{
+                <Input input-type="textarea" placeholder="Enter header..." :class="{
                     'no-resize output red': true,
                     'inputError': errors[1] === true
                 }" :value="decodedHeader" @update:value="handleHeaderUpdate"></Input>
@@ -200,7 +200,7 @@ function clearPayloadInput() {
             <div class="outputArea">
                 <InputOptions label="Payload: " @reset="clearPayloadInput" @paste="handlePastePayload"
                     :copyContent="decodedPayload" />
-                <Input input-type="textarea" placeholder="Enter content to hash..." :class="{
+                <Input input-type="textarea" placeholder="Enter payload..." :class="{
                     'no-resize output red': true,
                     'inputError': errors[2] === true
                 }" :value="decodedPayload" @update:value="handlePayloadUpdate"></Input>
