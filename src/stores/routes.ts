@@ -42,6 +42,11 @@ const routes: Routes = {
     name: 'JSON Formatter',
     dir: 'JsonFormatter',
     icon: 'data_object'
+  },
+  jwt_debugger: {
+    name: 'JWT Debugger',
+    dir: 'JwtDebugger',
+    image: 'jwt_icon.svg'
   }
 }
 

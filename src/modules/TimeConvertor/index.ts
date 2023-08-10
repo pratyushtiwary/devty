@@ -1,5 +1,7 @@
 import moment from 'moment-timezone'
 
+interface Dummy extends Function, moment.Moment {}
+
 export const availableTimezones = [
   'Europe/Andorra',
   'Asia/Dubai',
@@ -514,8 +516,10 @@ export default function TimeConvertor(
     output.isLeapYear = 'Invalid Timezone'
     return output
   }
-  moment.tz.setDefault(timezone)
-  const temp2 = moment(temp).tz(timezone || moment.tz.guess())
+
+  const tzMoment: moment.Moment = moment.tz.setDefault(timezone)
+  // @ts-ignore
+  const temp2 = tzMoment(renderDate(temp, 'Y-m-d H:i'))
 
   output.local = temp2.toString()
   output.iso = temp2.toISOString()
@@ -547,8 +551,9 @@ export function convertTimezone(
       output.iso = 'Invalid Timezone'
       return output
     }
-    moment.tz.setDefault(fromTimezone)
-    const temp = moment(isoTime).tz(fromTimezone)
+    const tzMoment = moment.tz.setDefault(fromTimezone)
+    // @ts-ignore
+    const temp = tzMoment(isoTime)
 
     const temp2 = temp.clone().tz(toTimezone)
 

@@ -88,6 +88,9 @@ function handleRouteChange() {
                     v-show="routes[route].visible !== false">
                     <ui-nav-item :active="currRoute === route" class="colorText" @click="handleRouteChange">
                         <ui-icon class="icon" v-if="routes[route].icon">{{ routes[route].icon }}</ui-icon>
+                        <img v-if="routes[route].image" :src="routes[route].image" :alt="routes[route].name + '\'s icon'"
+                            class="image" />
+
                         {{ routes[route].name }}</ui-nav-item>
                 </RouterLink>
                 <div v-if="Object.keys(routes).filter(e => routes[e].visible !== false).length === 0" class="noResults">
@@ -119,8 +122,13 @@ function handleRouteChange() {
     margin: 10px 0 5px 0;
 }
 
-.drawer .icon {
+.drawer .icon,
+.drawer .image {
     margin-right: 10px;
+}
+
+.drawer .image {
+    height: 55%;
 }
 
 .drawer .link {

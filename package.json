@@ -1,5 +1,5 @@
 {
-  "name": "devit",
+  "name": "devty",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -16,6 +16,7 @@
     "balm-ui": "^10.22.3",
     "crypto-js": "^4.1.1",
     "highlight.js": "^11.8.0",
+    "jose": "^4.14.4",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
     "pinia": "^2.1.4",

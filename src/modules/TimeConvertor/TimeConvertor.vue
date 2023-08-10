@@ -34,6 +34,7 @@ function handleChange(newVal: string) {
 }
 
 function handleDateChange(newVal: string) {
+    console.log(newVal);
     time.value = new Date(newVal);
 }
 </script>

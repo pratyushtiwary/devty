@@ -44,6 +44,8 @@ function handleChange(newVal: string) {
         <RouterLink :to="'/' + route" class="link">
           <ui-card-content class="content">
             <ui-icon v-if="routes[route].icon" class="icon">{{ routes[route].icon }}</ui-icon>
+            <img v-if="routes[route].image" :src="routes[route].image" :alt="routes[route].name + '\'s icon'"
+              class="image" />
             <h3 class="heading">{{ routes[route].name }}</h3>
           </ui-card-content>
         </RouterLink>
@@ -95,6 +97,13 @@ main {
 
 .modules .module .icon {
   font-size: 148px !important;
+}
+
+.modules .module .image {
+  display: block;
+  object-fit: contain;
+  width: 50%;
+  margin-bottom: 20px;
 }
 
 .modules .module .heading {
