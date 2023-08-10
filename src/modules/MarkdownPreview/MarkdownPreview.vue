@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, Ref, watchEffect } from "vue"
+import { ref, type Ref, watchEffect } from "vue"
 import { useSnackbar } from "@/stores/snackbar"
 import useThrottle from "@/hooks/useThrottle";
 import InputOptions from "@/components/InputOptionsComponent.vue";
@@ -33,7 +33,10 @@ function handleFile(files: BalmUIFile[]) {
     const fileReader = new FileReader()
     const type = file.name.split('.').pop()
 
-
+    if (!type) {
+        snackbar.show('File type not supported', 'error')
+        return
+    }
     if (type.toLowerCase() !== "md") {
         snackbar.show('File type not supported', 'error')
         return
