@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import Input from "@/components/InputComponent.vue";
-import { RouterLink } from "vue-router";
-import { useRoutes, type Routes } from "@/stores/routes";
 import useThrottle from "@/hooks/useThrottle";
+import { useRoutes, type Routes } from "@/stores/routes";
 import { ref } from "vue";
+import { RouterLink } from "vue-router";
 const allRoutes = useRoutes().getRoutes();
 const routes = ref(allRoutes);
 const value = ref('');
@@ -77,7 +77,7 @@ main {
   position: relative;
   padding: 0 25px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   margin-top: 10px;
 }
 

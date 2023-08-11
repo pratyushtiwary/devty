@@ -57,6 +57,11 @@ const routes: Routes = {
     name: 'HTML Preview',
     dir: 'HtmlPreview',
     icon: 'code'
+  },
+  url_encode_decode: {
+    name: 'URL Encode/Decode',
+    dir: 'UrlEncodeDecode',
+    icon: 'percent'
   }
 }
 
