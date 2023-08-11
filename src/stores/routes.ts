@@ -52,6 +52,11 @@ const routes: Routes = {
     name: 'Markdown Preview',
     dir: 'MarkdownPreview',
     image: 'markdown_icon.svg'
+  },
+  html_preview: {
+    name: 'HTML Preview',
+    dir: 'HtmlPreview',
+    icon: 'code'
   }
 }
 

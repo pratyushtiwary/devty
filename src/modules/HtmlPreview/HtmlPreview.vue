@@ -1,19 +1,49 @@
 <script setup lang="ts">
 import Input from "@/components/InputComponent.vue";
 import InputOptions from "@/components/InputOptionsComponent.vue";
-import OutputOptions from "@/components/OutputOptionsComponent.vue";
-import useThrottle from "@/hooks/useThrottle";
 import { useSnackbar } from "@/stores/snackbar";
 import type BalmUIFile from "@/types/file";
-import { ref, watchEffect, type Ref } from "vue";
-import convert from ".";
+import { onMounted, ref, watchEffect, type Ref } from "vue";
+import sanitize from ".";
 
-const value: Ref<string> = ref("# Heading")
-const output: Ref<string> = ref('')
+const value: Ref<string> = ref("<h1>Heading</h1>")
 const snackbar = useSnackbar()
+const iframe: Ref<HTMLIFrameElement | undefined> = ref()
+let headElem: HTMLElement | null | undefined = undefined;
+let bodyElem: HTMLElement | null | undefined = undefined;
+let colors: CSSStyleDeclaration | undefined = undefined;
 
-watchEffect(async () => {
-    output.value = await convert(value.value)
+onMounted(() => {
+    if (iframe.value) {
+        headElem = iframe.value.contentWindow?.document?.querySelector('head')
+        bodyElem = iframe.value.contentWindow?.document?.querySelector('body')
+        let root = document.querySelector(':root');
+        if (root) {
+            colors = getComputedStyle(root);
+        }
+    }
+})
+
+watchEffect(() => {
+    let body = sanitize(value.value);
+    let head = ''
+    if (iframe.value) {
+        if (colors) {
+            head = `<style>
+                body{
+                    color: ${colors.getPropertyValue('--color-text')};
+                    background-color: ${colors.getPropertyValue('--color-background')};
+                }
+            </style>`
+        }
+        if (headElem) {
+            headElem.innerHTML = head
+        }
+
+        if (bodyElem) {
+            bodyElem.innerHTML = body
+        }
+    }
 })
 
 function clearInput() {
@@ -32,12 +62,13 @@ function handleFile(files: BalmUIFile[]) {
     const file = files[0].sourceFile
     const fileReader = new FileReader()
     const type = file.name.split('.').pop()
+    const supported = ['html', 'htm']
 
     if (!type) {
         snackbar.show('File type not supported', 'error')
         return
     }
-    if (type.toLowerCase() !== "md") {
+    if (!supported.includes(type.toLowerCase())) {
         snackbar.show('File type not supported', 'error')
         return
     }
@@ -60,15 +91,14 @@ function handleFile(files: BalmUIFile[]) {
         <div class="inputSection">
             <InputOptions label="Input:" @reset="clearInput" @paste="handlePaste" :copyContent="value" />
             <Input input-type="textarea" placeholder="Enter Markdown..." class="no-resize inputText" label="Input"
-                :value="value" @update:value="useThrottle($event, handleInput, 500)"></Input>
+                :value="value" @update:value="handleInput"></Input>
             <ui-divider>OR</ui-divider>
-            <ui-file accept=".md" @change="handleFile">
+            <ui-file accept=".html,.htm" @change="handleFile">
                 <ui-button icon="file_upload" class="upload">Upload File</ui-button>
             </ui-file>
         </div>
         <div class="outputSection">
-            <OutputOptions label="Preview:" :copyContent="output" />
-            <div class="output" v-html="output" placeholder="Preview will appear here"></div>
+            <iframe class="output" ref="iframe" placeholder="Preview will appear here"></iframe>
         </div>
     </div>
 </template>
@@ -112,6 +142,8 @@ function handleFile(files: BalmUIFile[]) {
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 90vh;
+    border: 1px solid color(--color-text);
+    border-radius: 5px;
 }
 
 .outputSection .uploadInput {
@@ -141,6 +173,10 @@ function handleFile(files: BalmUIFile[]) {
 
     .outputSection {
         margin-top: 5px;
+    }
+
+    .outputSection .output {
+        height: 400px;
     }
 }
 </style>
