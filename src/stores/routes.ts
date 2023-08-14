@@ -62,6 +62,11 @@ const routes: Routes = {
     name: 'URL Encode/Decode',
     dir: 'UrlEncodeDecode',
     icon: 'percent'
+  },
+  url_parser: {
+    name: 'URL Parser',
+    dir: 'UrlParser',
+    icon: 'question_mark'
   }
 }
 

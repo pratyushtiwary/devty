@@ -159,3 +159,14 @@ input.vacp-color-input {
     color: transparent !important;
     background: lightblue;
 }
+
+.mdc-data-table__header-cell,
+.mdc-data-table__cell {
+    color: var(--color-text) !important;
+    background-color: var(--color-background) !important;
+    border-bottom-color: var(--color-text) !important;
+}
+
+table {
+    width: 100% !important;
+}
