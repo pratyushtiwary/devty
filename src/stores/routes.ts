@@ -67,6 +67,11 @@ const routes: Routes = {
     name: 'URL Parser',
     dir: 'UrlParser',
     icon: 'question_mark'
+  },
+  html_entity_encode_decode: {
+    name: 'HTML Entity Encode/Decode',
+    dir: 'HtmlEntityEncodeDecode',
+    image: 'html_entity_icon.svg'
   }
 }
 

@@ -77,7 +77,7 @@ main {
   position: relative;
   padding: 0 25px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   margin-top: 10px;
 }
 

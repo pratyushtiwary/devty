@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import Input from "@/components/InputComponent.vue";
-import { RouterLink, useRoute } from "vue-router";
-import { useRoutes, type Routes, type Route } from "@/stores/routes";
 import useThrottle from "@/hooks/useThrottle";
-import { onMounted, onUnmounted, ref, type Ref, watchEffect, onUpdated } from "vue";
+import { useRoutes, type Routes } from "@/stores/routes";
+import { onMounted, onUnmounted, onUpdated, ref, watchEffect, type Ref } from "vue";
+import { RouterLink, useRoute } from "vue-router";
 
 const allRoutes: Routes = useRoutes().getRoutes();
 const routes: Ref<Routes> = ref(allRoutes);
@@ -108,6 +108,7 @@ function handleRouteChange() {
     height: 100vh;
     background-color: rgba(111, 76, 48, 75%) !important;
     backdrop-filter: blur(25px);
+    width: 300px;
 }
 
 .drawer .colorText {
@@ -143,7 +144,7 @@ function handleRouteChange() {
 
 .modal {
     position: fixed;
-    width: 100%;
+    width: 100% !important;
 }
 
 .modal .title {
