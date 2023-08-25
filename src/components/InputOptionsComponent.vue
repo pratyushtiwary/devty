@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useSnackbar } from '@/stores/snackbar';
-const props = defineProps(['label', 'copyContent']);
+const props = defineProps(['label', 'copyContent', 'hideCopy', 'hideReset', 'hideClipboard']);
 const emit = defineEmits(['reset', 'paste']);
 
 const snackbar = useSnackbar();
@@ -26,9 +26,9 @@ function copy() {
     <div class="input-options">
         <p>{{ props.label || 'Input: ' }}</p>
         <div class="options">
-            <ui-button icon="content_copy" @click="copy">Copy</ui-button>
-            <ui-button icon="content_paste" @click="pasteContent">Clipboard</ui-button>
-            <ui-button icon="clear" @click="$emit('reset')">Reset</ui-button>
+            <ui-button icon="content_copy" @click="copy" v-if="!hideCopy">Copy</ui-button>
+            <ui-button icon="content_paste" @click="pasteContent" v-if="!hideClipboard">Clipboard</ui-button>
+            <ui-button icon="clear" @click="$emit('reset')" v-if="!hideReset">Reset</ui-button>
         </div>
     </div>
 </template>

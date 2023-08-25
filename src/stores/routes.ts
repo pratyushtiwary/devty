@@ -72,6 +72,11 @@ const routes: Routes = {
     name: 'HTML Entity Encode/Decode',
     dir: 'HtmlEntityEncodeDecode',
     image: 'html_entity_icon.svg'
+  },
+  regexp_tester: {
+    name: 'RegExp Tester',
+    dir: 'RegexpTester',
+    image: 'regexp_tester_icon.svg'
   }
 }
 

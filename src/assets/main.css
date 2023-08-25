@@ -170,3 +170,9 @@ input.vacp-color-input {
 table {
     width: 100% !important;
 }
+
+.match {
+    background: rgba(0, 255, 0, 0.25) !important;
+    color: #fff !important;
+    border-radius: 2.5px;
+}
