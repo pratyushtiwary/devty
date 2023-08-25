@@ -194,5 +194,9 @@ Duis interdum semper sodales. Maecenas ornare egestas aliquam. Cras pretium, nul
     .container .inputElem {
         height: 300px;
     }
+
+    .container .inputElem .styledInput {
+        width: 99.5%;
+    }
 }
 </style>
