@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import InputOptions from "@/components/InputOptionsComponent.vue";
 import Input from "@/components/InputComponent.vue";
+import InputOptions from "@/components/InputOptionsComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
+import { onMounted, ref, watchEffect, type Ref } from "vue";
 import jwtActions, { Colorize, supportedAlgos } from '.';
-import { ref, type Ref, watchEffect, onMounted } from "vue";
 
 const realVal: Ref<string> = ref('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c');
 const coloredVal: Ref<string> = ref(Colorize(realVal.value, ['red', 'purple', 'blue']))
@@ -201,7 +201,7 @@ function clearPayloadInput() {
                 <InputOptions label="Payload: " @reset="clearPayloadInput" @paste="handlePastePayload"
                     :copyContent="decodedPayload" />
                 <Input input-type="textarea" placeholder="Enter payload..." :class="{
-                    'no-resize output red': true,
+                    'no-resize output purple': true,
                     'inputError': errors[2] === true
                 }" :value="decodedPayload" @update:value="handlePayloadUpdate"></Input>
             </div>
