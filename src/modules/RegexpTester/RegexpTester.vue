@@ -18,17 +18,6 @@ watchEffect(() => {
     outputHtml.value = highlight(regex.value, text.value)
 });
 
-onMounted(() => {
-    if (!inputRef.value) return;
-    if (!highlightRef.value) return;
-    const inputElem = inputRef.value;
-    const highlightElem = highlightRef.value;
-    if (inputElem.scrollTop)
-        highlightElem.style.width = inputElem.clientWidth + 'px';
-    else
-        highlightElem.style.top = '100%';
-    highlightElem.style.top = inputElem.scrollTop * -1 + 'px';
-})
 
 function handleRegexChange(newVal: string) {
     regex.value = newVal;
@@ -48,6 +37,7 @@ function handleOutputFmtChange(newVal: string) {
 function handleOutputFmtPaste(newVal: string) {
     handleOutputFmtChange(newVal);
 }
+
 
 function handleUpdate() {
     if (!inputRef.value) return;
@@ -83,11 +73,18 @@ function clearOutput() {
     outputFmt.value = '$0\\n';
 }
 
-/*
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque in imperdiet magna. Morbi convallis ligula et dolor ornare, scelerisque fringilla est condimentum. Quisque a augue vitae elit egestas ultrices. Aliquam arcu elit, mattis ac efficitur sed, ornare a nisl. Fusce vel ante quis leo ullamcorper feugiat id vitae mauris. Sed vitae egestas elit. Vestibulum in lectus eu elit posuere faucibus. Vivamus feugiat urna sit amet augue molestie porta. Morbi pulvinar nisl risus, in convallis nisl dignissim nec. Curabitur non luctus sem. Fusce sit amet rhoncus nibh. Donec id lacus leo.
-
-Duis interdum semper sodales. Maecenas ornare egestas aliquam. Cras pretium, nulla nec faucibus lobortis, ipsum ipsum aliquam odio, id tempor mi erat ut dui. Maecenas tempor convallis lacus vel viverra. Aliquam magna dolor, blandit quis nisi ut, volutpat faucibus sem. Nulla placerat libero dui, eu condimentum ipsum semper quis. Sed elit odio, blandit pretium nunc vel, hendrerit porttitor metus. Vestibulum lacinia efficitur lacus vitae semper. Aenean in congue tortor, eget interdum ligula.
-*/
+onMounted(() => {
+    if (!inputRef.value) return;
+    if (!highlightRef.value) return;
+    console.log(1);
+    const inputElem = inputRef.value;
+    const highlightElem = highlightRef.value;
+    if (inputElem.scrollTop)
+        highlightElem.style.width = inputElem.clientWidth + 'px';
+    else
+        highlightElem.style.top = '100%';
+    highlightElem.style.top = inputElem.scrollTop * -1 + 'px';
+})
 </script>
 
 <template>
@@ -98,7 +95,8 @@ Duis interdum semper sodales. Maecenas ornare egestas aliquam. Cras pretium, nul
                 @update:value="useThrottle($event, handleRegexChange, 500)"></Input>
             <InputOptions label="Text:" @paste="handlePasteText" :hideReset="true" :hideCopy="true" />
             <div class="inputElem">
-                <textarea class="inputText tSel" ref="inputRef" v-model="text" @keyup="handleUpdate" @scroll="handleScroll">
+                <textarea class="inputText tSel" ref="inputRef" v-model="text" @keyup="handleUpdate" @scroll="handleScroll"
+                    spellcheck="false">
                 </textarea>
                 <div aria-hidden="true" class="styledInput" ref="highlightRef" v-html="outputHtml"></div>
             </div>
@@ -131,15 +129,17 @@ Duis interdum semper sodales. Maecenas ornare egestas aliquam. Cras pretium, nul
 }
 
 .container .inputElem {
-    position: relative;
-    width: 100%;
+    display: flex;
     flex-grow: 1;
+    position: relative;
     overflow: hidden;
+    border-radius: 5px;
+    width: 99.5%;
 }
 
-.container .inputElem .styledInput {
+.inputElem .styledInput {
     position: absolute;
-    width: 97.5%;
+    width: 99.5%;
     height: 95%;
     pointer-events: none;
     word-break: break-word;
@@ -150,8 +150,20 @@ Duis interdum semper sodales. Maecenas ornare egestas aliquam. Cras pretium, nul
     max-width: 100%;
 }
 
-.container .inputText {
+.inputElem .inputText {
+    font-family: sans-serif;
+    position: relative;
+    flex-grow: 1;
+    font-size: 25px;
     width: 100%;
+    height: 100%;
+    background-color: transparent !important;
+    color: transparent !important;
+    padding: 10px;
+    caret-color: var(--color-text) !important;
+    overflow: auto;
+    resize: none;
+    outline-color: var(--vt-c-text-dark-2);
 }
 
 .match {
@@ -196,7 +208,7 @@ Duis interdum semper sodales. Maecenas ornare egestas aliquam. Cras pretium, nul
     }
 
     .container .inputElem .styledInput {
-        width: 99.5%;
+        width: 100%;
     }
 }
 </style>

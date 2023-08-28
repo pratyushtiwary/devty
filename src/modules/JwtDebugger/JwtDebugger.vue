@@ -178,7 +178,7 @@ function clearPayloadInput() {
                     tSel: true,
                     inputError: errors[0] === true
                 }" placeholder="Paste a token" ref="inputRef" v-model="realVal" @keyup="handleUpdate"
-                    @scroll="handleScroll"></textarea>
+                    @scroll="handleScroll" spellcheck="false"></textarea>
                 <div aria-hidden="true" class="styledInput" ref="highlightRef" v-html="coloredVal"></div>
             </div>
             <ui-select v-model="selectedAlgo" @selected="handleAlgoChange" outlined :options="options" class="algoSelect">
