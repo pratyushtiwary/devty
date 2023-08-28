@@ -77,6 +77,11 @@ const routes: Routes = {
     name: 'RegExp Tester',
     dir: 'RegexpTester',
     image: 'regexp_tester_icon.svg'
+  },
+  backslash_escape_unescape: {
+    name: 'Backslash Escape Unescape',
+    dir: 'BackslashEscapeUnescape',
+    image: 'backslash_escape_unescape.svg'
   }
 }
 
