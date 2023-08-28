@@ -49,9 +49,9 @@ function handleUpdate() {
 
     // is element scrollable?
     // @ts-ignore
-    if (inputElem.scrollTop)
-        highlightElem.style.width = inputElem.clientWidth + 'px';
-    else
+    // if (inputElem.scrollTop)
+    //     highlightElem.style.width = inputElem.clientWidth + 'px';
+    if (!inputElem.scrollTop)
         highlightElem.style.top = '100%';
     highlightElem.style.top = inputElem.scrollTop * -1 + 'px';
 }
