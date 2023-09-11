@@ -19,3 +19,7 @@ Devty doesn't have any backend, it uses browser APIs and libraries to provide to
 ## How can I add my custom module?
 
 Please read the [`Adding Custom Modules`](docs/ADDING_CUSTOM_MODULE.md) section in `docs`
+
+## Attribution
+
+This project uses [`DevUtils`](https://devutils.com) as inspiration.
