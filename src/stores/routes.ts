@@ -82,6 +82,11 @@ const routes: Routes = {
     name: 'Backslash Escape Unescape',
     dir: 'BackslashEscapeUnescape',
     image: 'backslash_escape_unescape.svg'
+  },
+  text_diff_checker: {
+    name: 'Text Diff Checker',
+    dir: 'TextDiffChecker',
+    icon: 'difference'
   }
 }
 

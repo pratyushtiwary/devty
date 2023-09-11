@@ -31,7 +31,7 @@ function handleChange(newVal: string) {
 
 <template>
   <main>
-    <h1>Devty</h1>
+    <h1><img src="logo.svg" alt="Devty Logo" height="25"> {{ " " }}Devty</h1>
     <div :class="$tt('body1')">
       Your go to place for dev utilities & tools.
     </div>

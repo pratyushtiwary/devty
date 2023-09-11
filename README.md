@@ -1,33 +1,21 @@
-# Devty
+<a href="https://devty.vercel.app"><h1 style="text-align: center;">
+<img src="public/logo.svg" height="25"/>
+Devty
 
-Developers Utilities & Tools.
+</h1></a>
+<p style="text-align: center;">
+    Developers Utilities & Tools.<br>
+    This tool is inspired from 
+    <a href="https://devutils.com/" >DevUtils</a>
+</p>
+<img src="screenshot.png" width="100%" alt="Devty Homepage Screenshot">
 
-This tool is inspired from [DevUtils](https://devutils.com/)
+## How does it works?
 
-## Project Setup
+Devty doesn't have any backend, it uses browser APIs and libraries to provide tools. For example the [`Hash Generator`](https://devty.vercel.app/hash_generator) tool uses [`Google's CryptoJS Library`](https://www.npmjs.com/package/crypto-js) to generate different hash of a given string directly in your browser
 
-```sh
-yarn
-```
+**Devty doesn't have any backend and is a frontend specific app. No data is ever to the backend**
 
-### Compile and Hot-Reload for Development
+## How can I add my custom module?
 
-```sh
-yarn dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-yarn build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-yarn lint
-```
-
-## Credit
-
-This project is implementation of idea of [Vaibhav Kaushal](https://github.com/vaibhav-kaushal), you can checkout his version [here](https://github.com/techrail/devta)
+Please read the [`Adding Custom Modules`](docs/ADDING_CUSTOM_MODULE.md) section in `docs`
