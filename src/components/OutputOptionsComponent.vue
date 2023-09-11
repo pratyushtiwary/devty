@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useSnackbar } from '@/stores/snackbar';
-const props = defineProps(['label', 'copyContent']);
+const props = defineProps(['label', 'copyContent', 'hideCopy']);
 
 const snackbar = useSnackbar();
 
@@ -14,8 +14,9 @@ function copy() {
 <template>
     <div class="output-options">
         <p>{{ props.label || 'Output: ' }}</p>
+        <slot />
         <div class="options">
-            <ui-button icon="content_copy" @click="copy">Copy</ui-button>
+            <ui-button icon="content_copy" @click="copy" v-show="hideCopy">Copy</ui-button>
         </div>
     </div>
 </template>
