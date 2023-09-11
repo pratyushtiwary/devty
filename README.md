@@ -14,7 +14,7 @@ Devty
 
 Devty doesn't have any backend, it uses browser APIs and libraries to provide tools. For example the [`Hash Generator`](https://devty.vercel.app/hash_generator) tool uses [`Google's CryptoJS Library`](https://www.npmjs.com/package/crypto-js) to generate different hash of a given string directly in your browser
 
-**Devty doesn't have any backend and is a frontend specific app. No data is ever to the backend**
+**Devty doesn't have any backend and is a frontend specific app. No data is ever sent to the backend**
 
 ## How can I add my custom module?
 
