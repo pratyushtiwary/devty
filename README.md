@@ -22,4 +22,4 @@ Please read the [`Adding Custom Modules`](docs/ADDING_CUSTOM_MODULE.md) section 
 
 ## Attribution
 
-This project uses [`DevUtils`](devutils.com) as inspiration.
+This project uses [`DevUtils`](https://devutils.com) as inspiration.
