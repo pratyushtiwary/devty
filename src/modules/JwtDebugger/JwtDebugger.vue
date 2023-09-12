@@ -139,8 +139,8 @@ function clearPayloadInput() {
     <div class="container">
         <div class="inputSection">
             <InputOptions label="Encoded: " @reset="clearInput" @paste="handlePasteText" :copyContent="realVal" />
-            <StyledInput :value="realVal" :styledValue="coloredVal" @update:value="handleUpdate" class="inputParent"
-                :error="errors[0] === true" />
+            <StyledInput placeholder="Paste JWT Token..." :value="realVal" :styledValue="coloredVal"
+                @update:value="handleUpdate" class="inputParent" :error="errors[0] === true" />
             <ui-select v-model="selectedAlgo" @selected="handleAlgoChange" outlined :options="options" class="algoSelect">
                 Algorithm
             </ui-select>

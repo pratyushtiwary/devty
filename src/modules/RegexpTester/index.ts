@@ -1,3 +1,5 @@
+import useEncode from '@/hooks/useEncode'
+
 export function formatResults(result: IterableIterator<RegExpMatchArray>, format: string): string {
   let results = ``
 
@@ -19,6 +21,11 @@ export function formatResults(result: IterableIterator<RegExpMatchArray>, format
 }
 
 export function highlight(regex: string, content: string, className: string = 'match') {
+  regex = useEncode(regex)
+  if (regex === '') {
+    return useEncode(content)
+  }
+  content = useEncode(content)
   return content.replace(new RegExp(regex, 'g'), `<span class="${className}">$&</span>`)
 }
 

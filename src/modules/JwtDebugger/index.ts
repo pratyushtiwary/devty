@@ -1,14 +1,14 @@
+import useEncode from '@/hooks/useEncode'
 import {
   SignJWT,
-  generateKeyPair,
-  generateSecret,
-  decodeProtectedHeader,
   decodeJwt,
+  decodeProtectedHeader,
+  exportPKCS8,
+  exportSPKI,
+  generateKeyPair,
   importPKCS8,
   importSPKI,
-  jwtVerify,
-  exportSPKI,
-  exportPKCS8
+  jwtVerify
 } from 'jose'
 
 export const supportedAlgos = [
@@ -32,6 +32,7 @@ export interface Keys {
 }
 
 export function Colorize(jwtToken: string, classes: string[]) {
+  jwtToken = useEncode(jwtToken)
   if (jwtToken.replace(/\s*/, '') !== '') {
     let temp = jwtToken.split('.')
 
