@@ -115,12 +115,20 @@ function changeType(e: SelectEvent) {
     margin-top: 5px;
     overflow-y: auto;
     overflow-x: hidden;
-    height: 100px;
 }
 
 @media screen and (max-width: 800px) {
     .main .top {
         display: block;
+    }
+
+    .main .bottom {
+        height: 500px;
+
+    }
+
+    .main .bottom .output {
+        max-height: 300px;
     }
 }
 </style>

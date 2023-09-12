@@ -1,13 +1,25 @@
 <script setup lang="ts">
-import { watchEffect } from 'vue';
 import { useSnackbar } from '@/stores/snackbar';
+import { ref, watchEffect, type Ref } from 'vue';
 
+const bottom: Ref<number> = ref(0);
 const props = defineProps(['state', 'visible', 'content']);
 const snackbar = useSnackbar();
+let dialogElem: null | HTMLElement = null;
 
 watchEffect(() => {
     if (props.visible) {
+        dialogElem = document.querySelector('[aria-role="dialog"]');
+
+        if (dialogElem) {
+            const { y, height } = dialogElem.getBoundingClientRect();
+            // is the dialog at the bottom of the screen?
+            if (y + height === window.innerHeight) {
+                bottom.value = height;
+            }
+        }
         setTimeout(() => {
+            bottom.value = 0;
             snackbar.hide();
         }, 5000);
     }
@@ -18,7 +30,7 @@ watchEffect(() => {
     <div :class="{
         'snackbar': true,
         'show': visible
-    }">
+    }" :style="'bottom: ' + bottom + 'px;'">
         <ui-alert class="alert" stateOutlined :state="state">{{ content }}</ui-alert>
     </div>
 </template>

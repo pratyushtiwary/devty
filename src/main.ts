@@ -1,13 +1,13 @@
-import './assets/main.css'
 import 'balm-ui-css'
+import './assets/main.css'
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import hljsVuePlugin from '@highlightjs/vue-plugin'
 import BalmUI from 'balm-ui' // Official Google Material Components
 import hljs from 'highlight.js/lib/core'
 import json from 'highlight.js/lib/languages/json'
-import hljsVuePlugin from '@highlightjs/vue-plugin'
 import 'highlight.js/styles/atom-one-dark.css'
+import { createPinia } from 'pinia'
+import { createApp } from 'vue'
 
 import App from './App.vue'
 import router from './router'
