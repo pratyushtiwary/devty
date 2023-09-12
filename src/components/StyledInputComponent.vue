@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, toRef } from 'vue';
-const props = defineProps(['value', 'styledValue', 'error']);
+const props = defineProps(['value', 'styledValue', 'error', 'placeholder']);
 const emit = defineEmits(['update:value']);
 
 const value = computed({
@@ -64,7 +64,8 @@ function handleUpdate() {
 
 <template>
     <div :class="'styled-input ' + ($props.error && 'error ') + ($attrs.class || '')">
-        <textarea v-model="value" ref="inputRef" @scroll="handleScroll" @keyup="handleUpdate"></textarea>
+        <textarea v-model="value" ref="inputRef" @scroll="handleScroll" @keyup="handleUpdate"
+            :placeholder="$props.placeholder"></textarea>
         <div class="styled-text" ref="styledRef" v-html="styledValue" :style="'width: ' + styledTextWidth + 'px'">
         </div>
     </div>

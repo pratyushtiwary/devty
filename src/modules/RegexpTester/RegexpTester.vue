@@ -57,7 +57,8 @@ function clearOutput() {
             <Input input-type="text" placeholder="Enter Regular Expression..." class="no-resize inputText" :value="regex"
                 @update:value="useThrottle($event, handleRegexChange, 500)"></Input>
             <InputOptions label="Text:" @paste="handlePasteText" :hideReset="true" :hideCopy="true" />
-            <StyledInput :value="text" :styledValue="outputHtml" @update:value="handleUpdate" class="inputElem" />
+            <StyledInput placeholder="Enter Content..." :value="text" :styledValue="outputHtml" @update:value="handleUpdate"
+                class="inputElem" />
         </div>
         <div class="output">
             <InputOptions label="Output Format:" @reset="clearOutput" @paste="handleOutputFmtPaste" :hideCopy="true" />
