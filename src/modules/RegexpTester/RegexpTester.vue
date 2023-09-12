@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import Input from "@/components/InputComponent.vue";
 import InputOptions from "@/components/InputOptionsComponent.vue";
+import StyledInput from "@/components/StyledInputComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
-import { onMounted, ref, watchEffect, type Ref } from "vue";
+import { ref, watchEffect, type Ref } from "vue";
 import matcher, { highlight } from ".";
 
 const regex: Ref<string> = ref("([A-Z])\\w+")
@@ -10,8 +11,6 @@ const text: Ref<string> = ref(`Lorem ipsum dolor sit amet, consectetur adipiscin
 const outputFmt: Ref<string> = ref('$0\\n');
 const output: Ref<string> = ref(matcher(regex.value, text.value, outputFmt.value));
 const outputHtml: Ref<string> = ref(highlight(regex.value, text.value))
-const inputRef: Ref<HTMLElement | undefined> = ref();
-const highlightRef: Ref<HTMLElement | undefined> = ref();
 
 watchEffect(() => {
     output.value = matcher(regex.value, text.value, outputFmt.value);
@@ -38,31 +37,8 @@ function handleOutputFmtPaste(newVal: string) {
     handleOutputFmtChange(newVal);
 }
 
-
-function handleUpdate() {
-    if (!inputRef.value) return;
-    if (!highlightRef.value) return;
-    const inputElem = inputRef.value;
-    const highlightElem = highlightRef.value;
-    // @ts-ignore
-    text.value = inputElem.value
-
-    // is element scrollable?
-    // @ts-ignore
-    // if (inputElem.scrollTop)
-    //     highlightElem.style.width = inputElem.clientWidth + 'px';
-    if (!inputElem.scrollTop)
-        highlightElem.style.top = '100%';
-    highlightElem.style.top = inputElem.scrollTop * -1 + 'px';
-}
-
-function handleScroll() {
-    if (!inputRef.value) return;
-    if (!highlightRef.value) return;
-    const inputElem = inputRef.value;
-    const highlightElem = highlightRef.value;
-
-    highlightElem.style.top = inputElem.scrollTop * -1 + 'px';
+function handleUpdate(newVal: string) {
+    text.value = newVal;
 }
 
 function clear() {
@@ -72,19 +48,6 @@ function clear() {
 function clearOutput() {
     outputFmt.value = '$0\\n';
 }
-
-onMounted(() => {
-    if (!inputRef.value) return;
-    if (!highlightRef.value) return;
-    console.log(1);
-    const inputElem = inputRef.value;
-    const highlightElem = highlightRef.value;
-    if (inputElem.scrollTop)
-        highlightElem.style.width = inputElem.clientWidth + 'px';
-    else
-        highlightElem.style.top = '100%';
-    highlightElem.style.top = inputElem.scrollTop * -1 + 'px';
-})
 </script>
 
 <template>
@@ -94,12 +57,7 @@ onMounted(() => {
             <Input input-type="text" placeholder="Enter Regular Expression..." class="no-resize inputText" :value="regex"
                 @update:value="useThrottle($event, handleRegexChange, 500)"></Input>
             <InputOptions label="Text:" @paste="handlePasteText" :hideReset="true" :hideCopy="true" />
-            <div class="inputElem">
-                <textarea class="inputText tSel" ref="inputRef" v-model="text" @keyup="handleUpdate" @scroll="handleScroll"
-                    spellcheck="false">
-                </textarea>
-                <div aria-hidden="true" class="styledInput" ref="highlightRef" v-html="outputHtml"></div>
-            </div>
+            <StyledInput :value="text" :styledValue="outputHtml" @update:value="handleUpdate" class="inputElem" />
         </div>
         <div class="output">
             <InputOptions label="Output Format:" @reset="clearOutput" @paste="handleOutputFmtPaste" :hideCopy="true" />
@@ -129,63 +87,13 @@ onMounted(() => {
 }
 
 .container .inputElem {
-    display: flex;
-    flex-grow: 1;
-    position: relative;
-    overflow: hidden;
-    border-radius: 5px;
-    width: 99.5%;
-}
-
-.inputElem .styledInput {
-    position: absolute;
-    width: 99.5%;
-    height: 95%;
-    pointer-events: none;
-    word-break: break-word;
-    font-size: 25px;
-    padding: 10px;
-    line-height: 29px;
-    white-space: break-spaces;
-    max-width: 100%;
-}
-
-.inputElem .inputText {
-    font-family: sans-serif;
-    position: relative;
     flex-grow: 1;
     font-size: 25px;
-    width: 100%;
-    height: 100%;
-    background-color: transparent !important;
-    color: transparent !important;
-    padding: 10px;
-    caret-color: var(--color-text) !important;
-    overflow: auto;
-    resize: none;
-    outline-color: var(--vt-c-text-dark-2);
 }
 
 .match {
     color: green;
 }
-
-.container .tSel {
-    font-family: sans-serif;
-    position: relative;
-    flex-grow: 1;
-    font-size: 25px;
-    width: 100%;
-    height: 100%;
-    background-color: transparent !important;
-    color: transparent !important;
-    padding: 10px;
-    caret-color: var(--color-text) !important;
-    overflow: auto;
-    resize: none;
-    outline-color: var(--vt-c-text-dark-2);
-}
-
 
 .container .tSel::selection,
 .container .tSel::-moz-selection {
