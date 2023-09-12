@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import Input from "@/components/InputComponent.vue";
 import InputOptions from "@/components/InputOptionsComponent.vue";
+import StyledInput from "@/components/StyledInputComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
-import { onMounted, ref, watchEffect, type Ref } from "vue";
+import { ref, watchEffect, type Ref } from "vue";
 import jwtActions, { Colorize, supportedAlgos } from '.';
 
 const realVal: Ref<string> = ref('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c');
 const coloredVal: Ref<string> = ref(Colorize(realVal.value, ['red', 'purple', 'blue']))
 const decodedHeader = ref(jwtActions.getHeadersS(realVal.value));
 const decodedPayload = ref(jwtActions.getPayloadS(realVal.value));
-const inputRef: Ref<HTMLElement | undefined> = ref();
-const highlightRef: Ref<HTMLElement | undefined> = ref();
 const options = supportedAlgos.map(e => ({
     value: e,
     label: e
@@ -21,17 +20,6 @@ const keys: Ref<string[]> = ref([])
 const selectedAlgo = ref(supportedAlgos[0]);
 const signatureValid: Ref<boolean> = ref(true)
 
-onMounted(() => {
-    if (!inputRef.value) return;
-    if (!highlightRef.value) return;
-    const inputElem = inputRef.value;
-    const highlightElem = highlightRef.value;
-    if (inputElem.scrollTop)
-        highlightElem.style.width = inputElem.clientWidth + 'px';
-    else
-        highlightElem.style.top = '100%';
-    highlightElem.style.top = inputElem.scrollTop * -1 + 'px';
-})
 
 watchEffect(() => {
     coloredVal.value = Colorize(realVal.value, ['red', 'purple', 'blue'])
@@ -47,22 +35,9 @@ watchEffect(() => {
     }
 })
 
-function handleUpdate() {
-    if (!inputRef.value) return;
-    if (!highlightRef.value) return;
-    const inputElem = inputRef.value;
-    const highlightElem = highlightRef.value;
-    // @ts-ignore
-    realVal.value = inputElem.value
-    validateSignature()
-
-    // is element scrollable?
-    // @ts-ignore
-    if (inputElem.scrollTop)
-        highlightElem.style.width = inputElem.clientWidth + 'px';
-    else
-        highlightElem.style.top = '100%';
-    highlightElem.style.top = inputElem.scrollTop * -1 + 'px';
+function handleUpdate(newVal: string) {
+    realVal.value = newVal;
+    validateSignature();
 }
 
 function handlePasteText(newVal: string) {
@@ -77,14 +52,6 @@ function handlePastePayload(newVal: string) {
     handlePayloadUpdate(newVal)
 }
 
-function handleScroll() {
-    if (!inputRef.value) return;
-    if (!highlightRef.value) return;
-    const inputElem = inputRef.value;
-    const highlightElem = highlightRef.value;
-
-    highlightElem.style.top = inputElem.scrollTop * -1 + 'px';
-}
 
 // @ts-ignore
 async function handleAlgoChange(e) {
@@ -102,7 +69,7 @@ async function handleAlgoChange(e) {
 
 async function handleHeaderUpdate(newVal: string) {
     try {
-        const obj = JSON.parse(newVal)
+        JSON.parse(newVal)
         decodedHeader.value = newVal
         const jwtDetails = await jwtActions.generateToken({
             headers: JSON.parse(decodedHeader.value),
@@ -119,7 +86,7 @@ async function handleHeaderUpdate(newVal: string) {
 
 async function handlePayloadUpdate(newVal: string) {
     try {
-        const obj = JSON.parse(newVal)
+        JSON.parse(newVal)
         decodedPayload.value = newVal
         const jwtDetails = await jwtActions.generateToken({
             headers: JSON.parse(decodedHeader.value),
@@ -172,15 +139,8 @@ function clearPayloadInput() {
     <div class="container">
         <div class="inputSection">
             <InputOptions label="Encoded: " @reset="clearInput" @paste="handlePasteText" :copyContent="realVal" />
-            <div class="inputParent">
-                <textarea :class="{
-                    inputText: true,
-                    tSel: true,
-                    inputError: errors[0] === true
-                }" placeholder="Paste a token" ref="inputRef" v-model="realVal" @keyup="handleUpdate"
-                    @scroll="handleScroll" spellcheck="false"></textarea>
-                <div aria-hidden="true" class="styledInput" ref="highlightRef" v-html="coloredVal"></div>
-            </div>
+            <StyledInput :value="realVal" :styledValue="coloredVal" @update:value="handleUpdate" class="inputParent"
+                :error="errors[0] === true" />
             <ui-select v-model="selectedAlgo" @selected="handleAlgoChange" outlined :options="options" class="algoSelect">
                 Algorithm
             </ui-select>
@@ -230,48 +190,8 @@ function clearPayloadInput() {
 }
 
 .inputSection .inputParent {
-    display: flex;
-    flex-grow: 1;
-    position: relative;
-    overflow: hidden;
-    border-radius: 5px;
-    width: 99.5%;
-}
-
-.inputSection .styledInput {
-    position: absolute;
-    width: 99.5%;
-    height: 95%;
-    pointer-events: none;
-    word-break: break-word;
-    font-size: 25px;
-    padding: 10px;
-    line-height: 29px;
-    white-space: break-spaces;
-    max-width: 100%;
-}
-
-.inputSection .inputText {
-    font-family: sans-serif;
-    position: relative;
     flex-grow: 1;
     font-size: 25px;
-    width: 100%;
-    height: 100%;
-    background-color: transparent !important;
-    color: transparent !important;
-    padding: 10px;
-    caret-color: var(--color-text) !important;
-    overflow: auto;
-    resize: none;
-    outline-color: var(--vt-c-text-dark-2);
-}
-
-
-.inputSection .inputText::selection,
-.inputSection .inputText::-moz-selection {
-    color: transparent !important;
-    background-color: blue;
 }
 
 .signatureStatus {

@@ -10,14 +10,20 @@ const routes = useRoutes();
 const slug: Ref<string> = ref(route.params.slug.toString());
 let routeDetails: Ref<Route | undefined> = ref(undefined);
 
-if (typeof slug.value === 'string')
-    routeDetails.value = routes.getRoute(slug.value);
+if (typeof slug.value === 'string') {
+    const temp = routes.getRoute(slug.value);
+    routeDetails.value = temp;
+    document.title = temp.name + " - Devty";
+}
 
 onUpdated(() => {
     slug.value = route.params.slug.toString();
 
-    if (typeof slug.value === 'string')
-        routeDetails.value = routes.getRoute(slug.value);
+    if (typeof slug.value === 'string') {
+        const temp = routes.getRoute(slug.value);
+        routeDetails.value = temp;
+        document.title = temp.name + " - Devty"
+    }
 
     window.scrollTo(0, 0);
 
