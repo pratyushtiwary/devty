@@ -1,8 +1,7 @@
-<a href="https://devty.vercel.app"><h1 align="center">
+<h1 align="center">
 <img src="public/logo.svg" height="25"/>
 Devty
-
-</h1></a>
+</h1>
 <p align="center">
     Developers Utilities & Tools.<br>
     This tool is inspired from 

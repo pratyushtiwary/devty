@@ -44,7 +44,7 @@ window.addEventListener('beforeinstallprompt', e => {
   }
 })
 function displayBanner() {
-  const expiry = parseInt(localStorage.getItem('bannerHidden')) || (new Date()).getTime();
+  const expiry = parseInt(localStorage.getItem('bannerHidden') || '0') || (new Date()).getTime();
   const now = Date.now();
 
   if (now >= expiry) {
