@@ -11,10 +11,16 @@ import textDiff, { type diffType } from ".";
 const aaaa: Ref<string> = ref(`aaaa\n\nbbbb`);
 const bbbb: Ref<string> = ref(`abba\n\n\nbaab`);
 const type: Ref<diffType> = ref('lines');
-const output: Ref<string> = ref('');
+const outputElem = ref<HTMLDivElement>();
 
 watchEffect(() => {
-    output.value = textDiff(aaaa.value, bbbb.value, type.value);
+    if (!(outputElem.value instanceof HTMLDivElement)) return;
+    outputElem.value.innerHTML = '';
+    textDiff(aaaa.value, bbbb.value, type.value).forEach((e) => {
+        if (outputElem.value !== undefined) {
+            outputElem.value.append(e);
+        }
+    });
 });
 
 function handleAAAAInput(content: string) {
@@ -70,7 +76,7 @@ function changeType(e: SelectEvent) {
                     }
                 ]" :value="type" @selected="changeType">Diff Mode</Select>
             </OutputOptions>
-            <div class="output" v-html="output"></div>
+            <div class="output" ref="outputElem"></div>
         </div>
     </div>
 </template>
@@ -115,9 +121,15 @@ function changeType(e: SelectEvent) {
     margin-top: 5px;
     overflow-y: auto;
     overflow-x: hidden;
+    max-height: 300px;
 }
 
 @media screen and (max-width: 800px) {
+
+    .main {
+        display: block;
+    }
+
     .main .top {
         display: block;
     }
