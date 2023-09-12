@@ -4,7 +4,7 @@ Following are the steps on how to add a new module to Devty:
 
 - Create a new folder inside `src/modules`.
 
-**Devty follows `CamelCase` convention for naming modules folders**
+**Devty follows `CamelCase` convention for naming modules' folders**
 
 - Inside the new folder, make sure to create a vue file with the name same as the folder name.
 

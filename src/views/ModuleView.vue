@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, type Ref, onUpdated } from 'vue';
-import { useRoute } from 'vue-router';
-import { useRoutes, type Route } from '@/stores/routes';
 import Header from "@/components/HeaderComponent.vue";
 import LoadModule from "@/components/LoadModuleComponent.vue";
+import { useRoutes, type Route } from '@/stores/routes';
+import { onMounted, onUpdated, ref, type Ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const routes = useRoutes();
@@ -19,6 +19,12 @@ onUpdated(() => {
     if (typeof slug.value === 'string')
         routeDetails.value = routes.getRoute(slug.value);
 
+    window.scrollTo(0, 0);
+
+})
+
+onMounted(() => {
+    window.scrollTo(0, 0);
 })
 </script>
 

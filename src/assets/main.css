@@ -9,7 +9,8 @@
 .mdc-select__menu .mdc-deprecated-list,
 .mdc-autocomplete__menu .mdc-deprecated-list,
 .vacp-format-switch-button,
-.mdc-select--filled:not(.mdc-select--disabled) .mdc-select__anchor {
+.mdc-select--filled:not(.mdc-select--disabled) .mdc-select__anchor,
+.mdc-dialog__surface {
     background-color: var(--color-background) !important;
 }
 
@@ -23,8 +24,15 @@
 .mdc-text-field--disabled .mdc-text-field__icon--trailing,
 .mdc-select__selected-text,
 .mdc-text-field-helper-text,
-.mdc-select:not(.mdc-select--disabled) .mdc-floating-label {
+.mdc-select:not(.mdc-select--disabled) .mdc-floating-label,
+.mdc-dialog__title,
+.mdc-dialog__content {
     color: var(--color-text) !important;
+}
+
+.mdc-confirm-dialog__primary-button {
+    background-color: var(--color-background) !important;
+    color: var(--color-text) !important
 }
 
 .mdc-notched-outline__leading,
