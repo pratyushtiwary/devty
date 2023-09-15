@@ -193,3 +193,16 @@ table {
     background-color: rgba(255, 0, 0, 0.25);
     text-decoration: line-through;
 }
+
+pre code.hljs {
+    flex-grow: 1;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
+    margin-top: 5px;
+    max-height: 100vh;
+}

@@ -16,7 +16,7 @@ function copy() {
         <p>{{ props.label || 'Output: ' }}</p>
         <slot />
         <div class="options">
-            <ui-button icon="content_copy" @click="copy" v-show="hideCopy">Copy</ui-button>
+            <ui-button icon="content_copy" @click="copy" v-show="!hideCopy">Copy</ui-button>
         </div>
     </div>
 </template>
@@ -29,5 +29,9 @@ function copy() {
 
 .output-options p {
     flex-grow: 1;
+}
+
+.output-options .options {
+    margin-left: 5px;
 }
 </style>

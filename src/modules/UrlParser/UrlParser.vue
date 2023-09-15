@@ -111,17 +111,6 @@ function clearInput() {
     width: 100%;
 }
 
-pre.output {
-    flex-grow: 1;
-    overflow-y: auto;
-    white-space: pre-wrap;
-    white-space: -moz-pre-wrap;
-    white-space: -pre-wrap;
-    white-space: -o-pre-wrap;
-    word-wrap: break-word;
-    word-break: break-all;
-}
-
 @media screen and (max-width: 800px) {
     .container {
         display: block;
