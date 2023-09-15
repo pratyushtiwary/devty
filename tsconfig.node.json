@@ -9,8 +9,8 @@
   ],
   "compilerOptions": {
     "composite": true,
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "module": "es2022",
+    "moduleResolution": "node",
     "types": ["node"]
   }
 }

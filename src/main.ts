@@ -3,8 +3,9 @@ import './assets/main.css'
 
 import hljsVuePlugin from '@highlightjs/vue-plugin'
 import BalmUI from 'balm-ui' // Official Google Material Components
-import hljs from 'highlight.js/lib/core'
-import json from 'highlight.js/lib/languages/json'
+import 'highlight.js/lib/common'
+// import hljs from 'highlight.js/lib/core'
+// import json from 'highlight.js/lib/languages/json'
 import 'highlight.js/styles/atom-one-dark.css'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
@@ -13,8 +14,6 @@ import App from './App.vue'
 import router from './router'
 
 const app = createApp(App)
-
-hljs.registerLanguage('json', json)
 
 app.use(createPinia())
 app.use(router)

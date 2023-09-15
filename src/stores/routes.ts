@@ -87,6 +87,11 @@ const routes: Routes = {
     name: 'Text Diff Checker',
     dir: 'TextDiffChecker',
     icon: 'difference'
+  },
+  curl_to_code: {
+    name: 'cURL to Code',
+    dir: 'CurlToCode',
+    image: 'curl_to_code_icon.svg'
   }
 }
 
