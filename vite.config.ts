@@ -1,6 +1,7 @@
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import { VitePWA } from 'vite-plugin-pwa'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import topLevelAwait from 'vite-plugin-top-level-await'
@@ -8,6 +9,9 @@ import topLevelAwait from 'vite-plugin-top-level-await'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    nodePolyfills({
+      include: ['path', 'fs']
+    }),
     viteStaticCopy({
       targets: [
         {
@@ -35,7 +39,7 @@ export default defineConfig({
       workbox: {
         sourcemap: true,
         cleanupOutdatedCaches: true,
-        globPatterns: ['**/*.{js,css,html,png,svg,ts,vue,woff2,json,ico,txt}']
+        globPatterns: ['**/*.{js,css,html,png,svg,ts,vue,woff2,json,ico,wasm}']
       },
       devOptions: {
         enabled: true

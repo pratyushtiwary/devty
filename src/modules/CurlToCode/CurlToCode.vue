@@ -8,7 +8,6 @@ import type SelectEvent from "@/types/select";
 import { ref, watchEffect } from "vue";
 import convert, { SUPPORTED_CONVERTERS, type SUPPORTED_LANGUAGES } from ".";
 
-console.log(1);
 const input = ref<string>(`curl 'http://fiddle.jshell.net/echo/html/' \\
     -H 'Origin: http://fiddle.jshell.net' \\
     -H 'Accept-Encoding: gzip, deflate' \\

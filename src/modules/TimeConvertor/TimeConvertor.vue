@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import moment from "moment-timezone";
-import TimeConvertor, { type DateObj, convertTimezone, getDateObj, availableTimezones, renderDate } from ".";
 import Input from "@/components/InputComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
+import moment from "moment-timezone";
 import { ref, watchEffect } from "vue";
+import TimeConvertor, { availableTimezones, convertTimezone, getDateObj, renderDate } from ".";
 
 
 const format = 'Y-m-d H:i';
@@ -34,7 +34,6 @@ function handleChange(newVal: string) {
 }
 
 function handleDateChange(newVal: string) {
-    console.log(newVal);
     time.value = new Date(newVal);
 }
 </script>

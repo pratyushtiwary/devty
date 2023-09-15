@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watchEffect, shallowRef, ref } from 'vue';
+import { ref, shallowRef, watchEffect } from 'vue';
 const props = defineProps(['dir']);
 
 const loading = ref(false);
@@ -7,7 +7,10 @@ const Module = shallowRef(undefined);
 
 watchEffect(async () => {
     loading.value = true;
-    Module.value = (await import(`@/modules/${props.dir}/${props.dir}.vue`)).default;
+    const module = await import(`@/modules/${props.dir}/${props.dir}.vue`);
+    // @ts-ignore
+    await module.__devty;
+    Module.value = module.default;
     loading.value = false;
 })
 
