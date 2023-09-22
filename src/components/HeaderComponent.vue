@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import Input from "@/components/InputComponent.vue";
+import useStorage from "@/hooks/useStorage";
 import useThrottle from "@/hooks/useThrottle";
 import { useRoutes, type Routes } from "@/stores/routes";
 import { onMounted, onUnmounted, onUpdated, ref, watchEffect, type Ref } from "vue";
 import { RouterLink, useRoute } from "vue-router";
 
+const storage = useStorage();
 const allRoutes: Routes = useRoutes().getRoutes();
 const routes: Ref<Routes> = ref(allRoutes);
+const starredModules = ref(new Set(storage.load("starredModules") || []));
 
 const route = useRoute();
 const currRoute = ref(route.params.slug);
@@ -86,12 +89,15 @@ function handleRouteChange() {
             <ui-nav>
                 <RouterLink :to="'/' + route" class="link" v-for="(route, index) in Object.keys(routes)" :key="index"
                     v-show="routes[route].visible !== false">
-                    <ui-nav-item :active="currRoute === route" class="colorText" @click="handleRouteChange">
+                    <ui-nav-item :active="currRoute === route" class="colorText navItem" @click="handleRouteChange">
                         <ui-icon class="icon" v-if="routes[route].icon">{{ routes[route].icon }}</ui-icon>
                         <img v-if="routes[route].image" :src="routes[route].image" :alt="routes[route].name + '\'s icon'"
                             class="image" />
 
-                        {{ routes[route].name }}</ui-nav-item>
+                        <p class="content">{{ routes[route].name }}</p>
+                        <ui-icon class="icon" v-if="starredModules.has(route)"
+                            title="Starred Module, unstar from homepage">favorite</ui-icon>
+                    </ui-nav-item>
                 </RouterLink>
                 <div v-if="Object.keys(routes).filter(e => routes[e].visible !== false).length === 0" class="noResults">
                     No Result Found!
@@ -113,6 +119,14 @@ function handleRouteChange() {
 
 .drawer .colorText {
     color: var(--color-text) !important;
+}
+
+.drawer .navItem {
+    display: flex;
+}
+
+.drawer .navItem .content {
+    flex-grow: 1;
 }
 
 .drawer .searchInput {

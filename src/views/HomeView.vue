@@ -1,12 +1,19 @@
 <script setup lang="ts">
 import Input from "@/components/InputComponent.vue";
+import useStorage from "@/hooks/useStorage";
 import useThrottle from "@/hooks/useThrottle";
 import { useRoutes, type Routes } from "@/stores/routes";
-import { ref } from "vue";
+import { useSnackbar } from '@/stores/snackbar';
+import { onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
+const snackbarStore = useSnackbar();
+
 const allRoutes = useRoutes().getRoutes();
 const routes = ref(allRoutes);
 const value = ref('');
+const storage = useStorage();
+const starredModules = ref(new Set(storage.load("starredModules") || []));
+const expandedSections = ref([true, true]);
 
 function handleChange(newVal: string) {
   if (newVal) {
@@ -27,6 +34,32 @@ function handleChange(newVal: string) {
     routes.value = allRoutes;
   }
 }
+
+const starModule = (e: Event, moduleId: any) => {
+  e.preventDefault();
+  try {
+    starredModules.value = new Set(starredModules.value);
+    if (!starredModules.value.has(moduleId)) {
+      starredModules.value.add(moduleId);
+    } else {
+      starredModules.value.delete(moduleId);
+    }
+    if (starredModules.value.size === 0) {
+      expandedSections.value[0] = false;
+    }
+    storage.save('starredModules', Array.from(starredModules.value));
+  } catch (e) {
+    if (e instanceof Error) {
+      snackbarStore.show(`Failed to save details! Error: ${e.message}`, 'error')
+    }
+  }
+}
+
+onMounted(() => {
+  if (starredModules.value.size === 0) {
+    expandedSections.value[0] = false;
+  }
+});
 </script>
 
 <template>
@@ -38,19 +71,49 @@ function handleChange(newVal: string) {
     <br />
     <Input placeholder="Search..." class="searchBox" @update:value="useThrottle($event, handleChange, 500)"
       :value="value" />
-    <div class="modules">
-      <ui-card class="module" outlined v-for="(route, index) in Object.keys(routes)" :key="index"
-        v-show="routes[route].visible !== false">
-        <RouterLink :to="'/' + route" class="link">
-          <ui-card-content class="content">
-            <ui-icon v-if="routes[route].icon" class="icon">{{ routes[route].icon }}</ui-icon>
-            <img v-if="routes[route].image" :src="routes[route].image" :alt="routes[route].name + '\'s icon'"
-              class="image" />
-            <h3 class="heading">{{ routes[route].name }}</h3>
-          </ui-card-content>
-        </RouterLink>
-      </ui-card>
-    </div>
+    <ui-collapse with-icon ripple class="collapse" v-model="expandedSections[0]">
+      <template #toggle>
+        <div class="heading">Starred Modules ({{ starredModules.size }})</div>
+      </template>
+      <div class="modules">
+        <div v-if="starredModules.size === 0" class="noModules">
+          No Starred Module Found!
+        </div>
+        <ui-card class="module" outlined v-for="(route, index) in Array.from(starredModules)" :key="index"
+          v-show="routes[route].visible !== false">
+          <RouterLink :to="'/' + route" class="link">
+            <ui-card-content class="content" :title="'Click to open ' + routes[route].name + ' module'">
+              <ui-icon-button title="Star Module" :icon="starredModules.has(route) ? 'favorite' : 'favorite_border'"
+                class="star" @click="starModule($event, route)"></ui-icon-button>
+              <ui-icon v-if="routes[route].icon" class="icon">{{ routes[route].icon }}</ui-icon>
+              <img v-if="routes[route].image" :src="routes[route].image" :alt="routes[route].name + '\'s icon'"
+                class="image" />
+              <h3 class="heading">{{ routes[route].name }}</h3>
+            </ui-card-content>
+          </RouterLink>
+        </ui-card>
+      </div>
+    </ui-collapse>
+    <ui-collapse with-icon ripple class="collapse" v-model="expandedSections[1]">
+      <template #toggle>
+        <div class="heading">All Modules</div>
+      </template>
+      <div class="modules">
+        <ui-card class="module" outlined v-for="(route, index) in Object.keys(routes)" :key="index"
+          v-show="routes[route].visible !== false">
+          <RouterLink :to="'/' + route" class="link">
+            <ui-card-content class="content" :title="'Click to open ' + routes[route].name + ' module'">
+              <ui-icon-button title="Star Module" :icon="starredModules.has(route) ? 'favorite' : 'favorite_border'"
+                class="star" @click="starModule($event, route)"></ui-icon-button>
+              <ui-icon v-if="routes[route].icon" class="icon">{{ routes[route].icon }}</ui-icon>
+              <img v-if="routes[route].image" :src="routes[route].image" :alt="routes[route].name + '\'s icon'"
+                class="image" />
+              <h3 class="heading">{{ routes[route].name }}</h3>
+            </ui-card-content>
+          </RouterLink>
+        </ui-card>
+      </div>
+    </ui-collapse>
     <div v-if="Object.keys(routes).filter(e => routes[e].visible !== false).length === 0" class="noResults">
       No Result Found!
     </div>
@@ -61,10 +124,10 @@ function handleChange(newVal: string) {
 main {
   display: flex;
   flex-direction: column;
-  width: 100%;
   min-height: 100vh;
   align-items: center;
   padding-top: 15px;
+  margin: 0 10px;
 }
 
 .searchBox {
@@ -106,7 +169,8 @@ main {
   margin-bottom: 20px;
 }
 
-.modules .module .heading {
+.modules .module .heading,
+.collapse .heading {
   font-size: 24px;
   text-align: center;
 }
@@ -116,10 +180,29 @@ main {
   color: var(--color-text);
 }
 
+
+.modules .noModules {
+  color: var(--color-text);
+  width: 100%;
+  text-align: center;
+  font-size: 1.25rem;
+}
+
 .noResults {
   color: var(--color-text);
   width: 100%;
   text-align: center;
   font-size: 24px;
+}
+
+.star {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.collapse {
+  width: 100%;
+  margin-top: 5px;
 }
 </style>
