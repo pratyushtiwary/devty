@@ -206,3 +206,11 @@ pre code.hljs {
     margin-top: 5px;
     max-height: 100vh;
 }
+
+.mdc-collapse--with-icon .mdc-collapse__content {
+    padding-left: 0;
+}
+
+.mdc-collapse__header {
+    cursor: pointer;
+}
