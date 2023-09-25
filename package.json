@@ -22,6 +22,12 @@
         "AppImage"
       ],
       "category": "Utility"
+    },
+    "publish": {
+      "provider": "github",
+      "repo": "devty",
+      "owner": "pratyushtiwary",
+      "releaseType": "release"
     }
   },
   "scripts": {
@@ -33,9 +39,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
     "electron:dev": "electron .",
-    "electron:build-linux": "electron-builder  --linux",
-    "electron:build-windows": "electron-builder  --windows",
-    "electron:release": "electron-builder --windows --linux --publish always",
+    "electron:build-linux": "electron-builder  --linux --publish always",
+    "electron:build-windows": "electron-builder  --windows --publish always",
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
