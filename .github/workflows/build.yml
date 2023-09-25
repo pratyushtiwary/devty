@@ -37,5 +37,5 @@ jobs:
       - if: matrix.os == 'windows-latest'
         env:
           GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        name: Building electron release for linux
+        name: Building electron release for windows
         run: npm run electron:build-windows

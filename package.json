@@ -14,9 +14,6 @@
   "build": {
     "appId": "com.devty",
     "productName": "Devty",
-    "dmg": {
-      "icon": false
-    },
     "win": {
       "target": "portable"
     },
@@ -28,9 +25,8 @@
     },
     "files": [
       "dist/**/*",
-      "node_modules/**/*",
-      "package.json",
-      "main.js"
+      "main.js",
+      "preload.js"
     ],
     "publish": {
       "provider": "github",
