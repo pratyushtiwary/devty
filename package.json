@@ -27,7 +27,7 @@
       "provider": "github",
       "repo": "devty",
       "owner": "pratyushtiwary",
-      "releaseType": "release"
+      "releaseType": "draft"
     }
   },
   "scripts": {
@@ -53,7 +53,6 @@
     "diff": "^5.1.0",
     "dompurify": "^3.0.5",
     "electron-is-dev": "^2.0.0",
-    "electron-updater": "^6.1.4",
     "highlight.js": "^11.8.0",
     "jose": "^4.14.4",
     "marked": "^7.0.2",
