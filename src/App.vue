@@ -4,6 +4,7 @@ import { useRegisterSW } from 'virtual:pwa-register/vue';
 import { ref, type Ref } from "vue";
 import { RouterView } from 'vue-router';
 import Snackbar from './components/SnackbarComponent.vue';
+import TitleBarComponent from './components/TitleBarComponent.vue';
 import { useSnackbar } from './stores/snackbar';
 
 const snackbarStore = useSnackbar();
@@ -77,6 +78,7 @@ window.addEventListener('appinstalled', () => {
 </script>
 
 <template>
+  <TitleBarComponent />
   <div :class="{ 'installation-banner': true, 'open': showBanner }" v-if="showBanner" aria-role="dialog">
     Install Devty as app? It won't take much space and will work offline!
     <div class="actions">

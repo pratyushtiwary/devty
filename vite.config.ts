@@ -9,6 +9,7 @@ import moduleListGenerator from './moduleListGenerator'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './',
   plugins: [
     moduleListGenerator(),
     nodePolyfills({

@@ -1,9 +1,13 @@
 import HomeView from '@/views/HomeView.vue'
 import ModuleView from '@/views/ModuleView.vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 
+// eslint-disable-next-line no-console
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  // @ts-ignore
+  history: window.IS_ELECTRON
+    ? createWebHashHistory(import.meta.env.BASE_URL)
+    : createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',

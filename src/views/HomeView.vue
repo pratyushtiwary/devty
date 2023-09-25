@@ -12,7 +12,6 @@ const snackbarStore = useSnackbar();
 
 const allRoutes = useRoutes().getRoutes();
 const routes = ref(allRoutes);
-// const value = ref('');
 const isSearchState = ref(false);
 const storage = useStorage();
 const starredModules = ref(new Set(storage.load("starredModules") || []));
@@ -62,6 +61,7 @@ const starModule = (e: Event, moduleId: any) => {
 }
 
 onMounted(() => {
+  document.title = 'Devty'
   if (starredModules.value.size === 0) {
     expandedSections.value[0] = false;
   }
