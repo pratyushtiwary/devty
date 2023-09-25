@@ -14,15 +14,24 @@
   "build": {
     "appId": "com.devty",
     "productName": "Devty",
-    "dmg": {
-      "icon": false
+    "directories": {
+      "buildResources": "dist"
+    },
+    "win": {
+      "icon": "./dist/logo.png"
     },
     "linux": {
       "target": [
         "AppImage"
       ],
-      "category": "Utility"
+      "category": "Utility",
+      "icon": "./dist/logo.png"
     },
+    "files": [
+      "dist/**/*",
+      "main.js",
+      "preload.js"
+    ],
     "publish": {
       "provider": "github",
       "repo": "devty",

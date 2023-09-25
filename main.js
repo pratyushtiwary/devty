@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-undef */
 const { app, BrowserWindow, session, ipcMain } = require('electron')
+const url = require('url')
 const isDev = require('electron-is-dev')
 const path = require('path')
 
@@ -28,7 +29,13 @@ const createWindow = () => {
   })
 
   win.removeMenu()
-  win.loadFile('dist/index.html')
+  win.loadURL(
+    url.format({
+      pathname: path.join(__dirname, 'dist/index.html'),
+      protocol: 'file:',
+      slashes: true
+    })
+  )
   if (isDev) {
     win.openDevTools()
   }
