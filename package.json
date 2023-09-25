@@ -27,7 +27,7 @@
       "provider": "github",
       "repo": "devty",
       "owner": "pratyushtiwary",
-      "releaseType": "release"
+      "releaseType": "draft"
     }
   },
   "scripts": {
