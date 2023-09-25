@@ -33,7 +33,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
     "electron:dev": "electron .",
-    "electron:build": "electron-builder --windows --linux",
+    "electron:build-linux": "electron-builder  --linux",
+    "electron:build-windows": "electron-builder  --windows",
     "electron:release": "electron-builder --windows --linux --publish always",
     "postinstall": "electron-builder install-app-deps"
   },
