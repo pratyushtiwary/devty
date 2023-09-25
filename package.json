@@ -17,6 +17,9 @@
     "dmg": {
       "icon": false
     },
+    "win": {
+      "target": "portable"
+    },
     "linux": {
       "target": [
         "AppImage"
