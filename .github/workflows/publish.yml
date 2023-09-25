@@ -1,9 +1,8 @@
-name: Build
+name: Build & Publish
 
 on:
-  push:
-    tags:
-      - 'v*'
+  release:
+    types: [created]
 
 jobs:
   build:
