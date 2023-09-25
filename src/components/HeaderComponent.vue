@@ -11,6 +11,8 @@ const storage = useStorage();
 const allRoutes: Routes = useRoutes().getRoutes();
 const routes: Ref<Routes> = ref(allRoutes);
 const starredModules = ref(new Set(storage.load("starredModules") || []));
+// @ts-ignore
+const IS_ELECTRON = window.IS_ELECTRON;
 
 const route = useRoute();
 const currRoute = ref(route.params.slug);
@@ -66,7 +68,8 @@ function handleRouteChange() {
     <ui-drawer :class="{
         'drawer': true,
         'modal': isMobile
-    }" v-model="openDrawer" :type="isMobile ? 'modal' : 'permanent'">
+    }" v-model="openDrawer" :type="isMobile ? 'modal' : 'permanent'"
+        :style="IS_ELECTRON && 'height: calc(100vh - 48px)'">
         <ui-drawer-header>
             <ui-drawer-title class="colorText title">
                 <RouterLink to="/" class="homeLink">
