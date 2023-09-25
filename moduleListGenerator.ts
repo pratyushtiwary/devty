@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import fs from 'fs'
 import path from 'path'
-import { type Route, type Routes } from './src/types/route'
+import { type Route } from './src/types/route'
 
 interface CustomRoute extends Route {
   creation?: Date
@@ -34,8 +34,7 @@ function generateRoutes() {
 
   for (let i = 0; i < modules.length; i++) {
     const modulePath = path.join(modulesPath, modules[i]),
-      moduleConfigPath = path.join(modulePath, 'config.json'),
-      stat = fs.statSync(modulePath)
+      moduleConfigPath = path.join(modulePath, 'config.json')
 
     if (!fs.existsSync(moduleConfigPath)) {
       console.warn(`Skipping ${modules[i]} module, no config file found`)
@@ -54,7 +53,6 @@ function generateRoutes() {
 
       routesList[slug] = {
         dir: modules[i],
-        creation: stat.ctime,
         ...config
       }
     } catch (e) {
@@ -62,20 +60,8 @@ function generateRoutes() {
     }
   }
 
-  // sort based on creation time
-  const finalRoutes: Routes = {}
-  Object.keys(routesList)
-    .sort((a: string, b: string) => {
-      // @ts-ignore
-      return routesList[a].creation?.getTime() - routesList[b].creation?.getTime()
-    })
-    .forEach((e) => {
-      delete routesList[e].creation
-      finalRoutes[e] = routesList[e]
-    })
-
   const finalFile = `import { type Routes } from '@/types/route'\nconst routes: Routes = ${JSON.stringify(
-    finalRoutes,
+    routesList,
     null,
     4
   )};\n\nexport default routes;`

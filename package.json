@@ -14,14 +14,18 @@
   "build": {
     "appId": "com.devty",
     "productName": "Devty",
+    "directories": {
+      "buildResources": "dist"
+    },
     "win": {
-      "target": "portable"
+      "icon": "./dist/logo.png"
     },
     "linux": {
       "target": [
         "AppImage"
       ],
-      "category": "Utility"
+      "category": "Utility",
+      "icon": "./dist/logo.png"
     },
     "files": [
       "dist/**/*",
