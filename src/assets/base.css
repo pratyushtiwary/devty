@@ -31,6 +31,11 @@
 
   --color-heading: var(--vt-c-text-dark-1);
   --color-text: var(--vt-c-text-dark-1);
+
+  --title-background: var(--vt-c-black-soft);
+
+  --scroll-background: #eee;
+  --scroll-foreground: #333333;
 }
 
 *,
@@ -67,4 +72,19 @@ body {
 
 ::placeholder {
   color: var(--vt-c-text-dark-2) !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 7.5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--scroll-background);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-foreground);
 }

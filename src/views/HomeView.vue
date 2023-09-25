@@ -1,38 +1,43 @@
 <script setup lang="ts">
-import Input from "@/components/InputComponent.vue";
+// import Input from "@/components/InputComponent.vue";
+import SearchInput from "@/components/SearchInputComponent.vue";
 import useStorage from "@/hooks/useStorage";
 import useThrottle from "@/hooks/useThrottle";
-import { useRoutes, type Routes } from "@/stores/routes";
+import { useRoutes } from "@/stores/routes";
 import { useSnackbar } from '@/stores/snackbar';
+import { type Routes } from '@/types/route';
 import { onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
 const snackbarStore = useSnackbar();
 
 const allRoutes = useRoutes().getRoutes();
 const routes = ref(allRoutes);
-const value = ref('');
+const isSearchState = ref(false);
 const storage = useStorage();
 const starredModules = ref(new Set(storage.load("starredModules") || []));
 const expandedSections = ref([true, true]);
 
 function handleChange(newVal: string) {
-  if (newVal) {
-    const all = Object.keys(allRoutes);
-    const regex = new RegExp(newVal.toLowerCase(), 'g');
-    let validRoutes: Routes = {};
+  const all = Object.keys(allRoutes);
+  const regex = new RegExp(newVal.toLowerCase(), 'g');
+  let validRoutes: Routes = {};
 
-    all.forEach(e => {
-      validRoutes[e] = {
-        ...allRoutes[e],
-        visible: Boolean(allRoutes[e].name.toLowerCase().match(regex))
-      }
-    })
+  all.forEach(e => {
+    validRoutes[e] = {
+      ...allRoutes[e],
+      visible: Boolean(allRoutes[e].name.toLowerCase().match(regex))
+    }
+  })
 
 
-    routes.value = validRoutes
-  } else {
-    routes.value = allRoutes;
-  }
+  routes.value = validRoutes
+  isSearchState.value = true;
+}
+
+function reset() {
+  routes.value = allRoutes;
+  isSearchState.value = false;
+
 }
 
 const starModule = (e: Event, moduleId: any) => {
@@ -56,6 +61,7 @@ const starModule = (e: Event, moduleId: any) => {
 }
 
 onMounted(() => {
+  document.title = 'Devty'
   if (starredModules.value.size === 0) {
     expandedSections.value[0] = false;
   }
@@ -69,9 +75,9 @@ onMounted(() => {
       Your go to place for dev utilities & tools.
     </div>
     <br />
-    <Input placeholder="Search..." class="searchBox" @update:value="useThrottle($event, handleChange, 500)"
-      :value="value" />
-    <ui-collapse with-icon ripple class="collapse" v-model="expandedSections[0]">
+    <SearchInput placeholder="Search..." class="searchBox" @update:value="useThrottle($event, handleChange, 100)"
+      @reset="reset" />
+    <ui-collapse with-icon ripple class="collapse" v-model="expandedSections[0]" v-show="!isSearchState">
       <template #toggle>
         <div class="heading">Starred Modules ({{ starredModules.size }})</div>
       </template>
@@ -79,12 +85,13 @@ onMounted(() => {
         <div v-if="starredModules.size === 0" class="noModules">
           No Starred Module Found!
         </div>
-        <ui-card class="module" outlined v-for="(route, index) in Array.from(starredModules)" :key="index"
+        <ui-card class="module" outlined v-for="( route, index ) in  Array.from(starredModules) " :key="index"
           v-show="routes[route].visible !== false">
           <RouterLink :to="'/' + route" class="link">
             <ui-card-content class="content" :title="'Click to open ' + routes[route].name + ' module'">
-              <ui-icon-button title="Star Module" :icon="starredModules.has(route) ? 'favorite' : 'favorite_border'"
-                class="star" @click="starModule($event, route)"></ui-icon-button>
+              <ui-icon-button :title="(starredModules.has(route) ? 'Unstar' : 'Star') + ' Module'"
+                :icon="starredModules.has(route) ? 'favorite' : 'favorite_border'" class="star"
+                @click="starModule($event, route)"></ui-icon-button>
               <ui-icon v-if="routes[route].icon" class="icon">{{ routes[route].icon }}</ui-icon>
               <img v-if="routes[route].image" :src="routes[route].image" :alt="routes[route].name + '\'s icon'"
                 class="image" />
@@ -99,7 +106,7 @@ onMounted(() => {
         <div class="heading">All Modules</div>
       </template>
       <div class="modules">
-        <ui-card class="module" outlined v-for="(route, index) in Object.keys(routes)" :key="index"
+        <ui-card class="module" outlined v-for="( route, index ) in  Object.keys(routes) " :key="index"
           v-show="routes[route].visible !== false">
           <RouterLink :to="'/' + route" class="link">
             <ui-card-content class="content" :title="'Click to open ' + routes[route].name + ' module'">
@@ -115,7 +122,7 @@ onMounted(() => {
       </div>
     </ui-collapse>
     <div v-if="Object.keys(routes).filter(e => routes[e].visible !== false).length === 0" class="noResults">
-      No Result Found!
+      No Module Found!
     </div>
   </main>
 </template>
