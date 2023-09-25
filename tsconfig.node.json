@@ -5,7 +5,9 @@
     "vitest.config.*",
     "cypress.config.*",
     "nightwatch.conf.*",
-    "playwright.config.*"
+    "playwright.config.*",
+    "moduleListGenerator.ts",
+    "src/types/route.ts"
   ],
   "compilerOptions": {
     "composite": true,

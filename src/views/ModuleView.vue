@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import Header from "@/components/HeaderComponent.vue";
 import LoadModule from "@/components/LoadModuleComponent.vue";
-import { useRoutes, type Route } from '@/stores/routes';
+import { useRoutes } from '@/stores/routes';
+import { type Route } from '@/types/route';
 import { onMounted, onUpdated, ref, type Ref } from 'vue';
 import { useRoute } from 'vue-router';
 

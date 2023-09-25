@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import Input from "@/components/InputComponent.vue";
+import SearchInput from "@/components/SearchInputComponent.vue";
 import useStorage from "@/hooks/useStorage";
 import useThrottle from "@/hooks/useThrottle";
-import { useRoutes, type Routes } from "@/stores/routes";
-import { onMounted, onUnmounted, onUpdated, ref, watchEffect, type Ref } from "vue";
+import { useRoutes } from "@/stores/routes";
+import { type Routes } from "@/types/route";
+import { onMounted, onUnmounted, onUpdated, ref, type Ref } from "vue";
 import { RouterLink, useRoute } from "vue-router";
 
 const storage = useStorage();
@@ -15,7 +16,6 @@ const route = useRoute();
 const currRoute = ref(route.params.slug);
 const isMobile = ref(window.outerWidth < 800);
 const openDrawer = ref(false);
-const searchVal = ref('');
 
 function resize() {
     isMobile.value = window.outerWidth < 800;
@@ -29,38 +29,31 @@ onUnmounted(() => {
     window.removeEventListener('resize', resize);
 });
 
-watchEffect(() => {
-    if (searchVal.value) {
-        const all = Object.keys(allRoutes);
-        const regex = new RegExp(searchVal.value.toLowerCase(), 'g');
-        let validRoutes: Routes = {};
+function resetSearch() {
+    routes.value = allRoutes;
 
-        all.forEach(e => {
-            validRoutes[e] = {
-                ...allRoutes[e],
-                visible: Boolean(allRoutes[e].name.toLowerCase().match(regex))
-            }
-        })
-
-        routes.value = validRoutes
-    } else {
-        routes.value = allRoutes;
-    }
-});
-
+}
 onUpdated(() => {
     currRoute.value = route.params.slug.toString();
 });
 
 function handleSearch(searchTerm: string) {
-    searchVal.value = searchTerm;
+    const all = Object.keys(allRoutes);
+    const regex = new RegExp(searchTerm.toLowerCase(), 'g');
+    let validRoutes: Routes = {};
+
+    all.forEach(e => {
+        validRoutes[e] = {
+            ...allRoutes[e],
+            visible: Boolean(allRoutes[e].name.toLowerCase().match(regex))
+        }
+    })
+
+    routes.value = validRoutes
 }
 
 function handleRouteChange() {
     openDrawer.value = false;
-    setTimeout(() => {
-        searchVal.value = '';
-    });
 }
 </script>
 
@@ -83,8 +76,8 @@ function handleRouteChange() {
             </ui-drawer-title>
             <ui-drawer-subtitle class="colorText">Your go to place for dev utilities & tools.</ui-drawer-subtitle>
         </ui-drawer-header>
-        <Input placeholder="Search..." class="searchInput" @update:value="useThrottle($event, handleSearch)"
-            :value="searchVal" />
+        <SearchInput placeholder="Search..." class="searchInput" @update:value="useThrottle($event, handleSearch, 100)"
+            @reset="resetSearch" />
         <ui-drawer-content>
             <ui-nav>
                 <RouterLink :to="'/' + route" class="link" v-for="(route, index) in Object.keys(routes)" :key="index"
@@ -114,7 +107,7 @@ function handleRouteChange() {
     height: 100vh;
     background-color: rgba(111, 76, 48, 75%) !important;
     backdrop-filter: blur(25px);
-    width: 300px;
+    width: 350px;
 }
 
 .drawer .colorText {

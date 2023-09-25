@@ -12,6 +12,7 @@
 .mdc-select--filled:not(.mdc-select--disabled) .mdc-select__anchor,
 .mdc-dialog__surface {
     background-color: var(--color-background) !important;
+    color: var(--color-text) !important;
 }
 
 .no-resize .mdc-text-field__resizer {
@@ -203,7 +204,6 @@ pre code.hljs {
     white-space: -o-pre-wrap;
     word-wrap: break-word;
     word-break: break-all;
-    margin-top: 5px;
     max-height: 100vh;
 }
 
@@ -213,4 +213,8 @@ pre code.hljs {
 
 .mdc-collapse__header {
     cursor: pointer;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    background-color: var(--color-background);
 }

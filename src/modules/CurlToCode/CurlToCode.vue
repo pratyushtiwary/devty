@@ -88,6 +88,11 @@ function clearInput() {
     flex-grow: 1;
 }
 
+.container .output .outputText {
+    margin-top: 5px;
+    max-height: calc(100vh - 82.5px);
+}
+
 @media screen and (max-width: 800px) {
     .container {
         display: block;

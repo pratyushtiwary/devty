@@ -5,10 +5,12 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import { VitePWA } from 'vite-plugin-pwa'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import topLevelAwait from 'vite-plugin-top-level-await'
+import moduleListGenerator from './moduleListGenerator'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    moduleListGenerator(),
     nodePolyfills({
       include: ['path', 'fs']
     }),
