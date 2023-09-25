@@ -26,6 +26,11 @@
       ],
       "category": "Utility"
     },
+    "files": [
+      "dist/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
     "publish": {
       "provider": "github",
       "repo": "devty",
