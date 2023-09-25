@@ -21,11 +21,11 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Type Check
-        run: npm run type-check
+      - name: Install Dependencies
+        run: npm ci
 
       - name: Generate Build
-        run: npm run build-only
+        run: npm run build
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
