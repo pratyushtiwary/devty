@@ -3,6 +3,7 @@
 const { app, BrowserWindow, session, ipcMain } = require('electron')
 const isDev = require('electron-is-dev')
 const path = require('path')
+const autoUpdater = require('electron-updater')
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -47,6 +48,10 @@ app.whenReady().then(() => {
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+})
+
+app.on('ready', () => {
+  autoUpdater.checkForUpdatesAndNotify()
 })
 
 app.on('window-all-closed', () => {
