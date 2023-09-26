@@ -40,12 +40,12 @@ function clear() {
         <div class="decode">
             <InputOptions label="Decoded:" @reset="clear" @paste="handleDecodedPaste" :copyContent="decoded" />
             <Input input-type="textarea" placeholder="Enter Decoded String..." class="no-resize inputText" :value="decoded"
-                @update:value="useThrottle($event, handleDecodedInput, 500)"></Input>
+                @update:value="useThrottle($event, handleDecodedInput)"></Input>
         </div>
         <div class="encode">
             <InputOptions label="Encoded:" @reset="clear" @paste="handleEncodedPaste" :copyContent="encoded" />
             <Input input-type="textarea" placeholder="Enter Encoded String..." class="no-resize inputText" :value="encoded"
-                @update:value="useThrottle($event, handleEncodedInput, 500)"></Input>
+                @update:value="useThrottle($event, handleEncodedInput)"></Input>
         </div>
     </div>
 </template>

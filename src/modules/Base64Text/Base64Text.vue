@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import InputOptions from "@/components/InputOptionsComponent.vue";
 import Input from "@/components/InputComponent.vue";
-import Base64Text from ".";
+import InputOptions from "@/components/InputOptionsComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
 import { ref, type Ref } from "vue";
+import Base64Text from ".";
 
 const value: Ref<string> = ref('Hello World');
 const output: Ref<string> = ref(Base64Text(value.value));
@@ -29,12 +29,12 @@ function clearInput() {
         <div class="inputSection">
             <InputOptions label="Base64 Decoded:" @reset="clearInput" @paste="handleEncode" :copyContent="value" />
             <Input input-type="textarea" placeholder="Enter base64 text to encode..." class="no-resize inputText"
-                label="Input" :value="value" @update:value="useThrottle($event, handleEncode, 500)"></Input>
+                label="Input" :value="value" @update:value="useThrottle($event, handleEncode)"></Input>
         </div>
         <div class="outputSection">
             <InputOptions label="Base64 Encoded:" @reset="clearInput" @paste="handleDecode" :copyContent="output" />
             <Input input-type="textarea" placeholder="Enter base64 text to decode..." class="no-resize outputText"
-                label="Output" :value="output" @update:value="useThrottle($event, handleDecode, 500)"></Input>
+                label="Output" :value="output" @update:value="useThrottle($event, handleDecode)"></Input>
         </div>
     </div>
 </template>

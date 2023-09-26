@@ -41,12 +41,12 @@ function clear() {
         <div class="decode">
             <InputOptions label="Unescaped:" @reset="clear" @paste="handleUnescapedPaste" :copyContent="unescaped" />
             <Input input-type="textarea" placeholder="Enter Decoded String..." class="no-resize inputText"
-                :value="unescaped" @update:value="useThrottle($event, handleUnescapedInput, 500)"></Input>
+                :value="unescaped" @update:value="useThrottle($event, handleUnescapedInput)"></Input>
         </div>
         <div class="encode">
             <InputOptions label="Escaped:" @reset="clear" @paste="handleEscapedPaste" :copyContent="escaped" />
             <Input input-type="textarea" placeholder="Enter Encoded String..." class="no-resize inputText" :value="escaped"
-                @update:value="useThrottle($event, handleEscapedInput, 500)"></Input>
+                @update:value="useThrottle($event, handleEscapedInput)"></Input>
         </div>
     </div>
 </template>

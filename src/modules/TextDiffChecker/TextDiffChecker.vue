@@ -51,12 +51,12 @@ function changeType(e: SelectEvent) {
             <div class="aaaa">
                 <InputOptions label="aaaa:" @reset="clearAAAA" @paste="handleAAAAInput" :copyContent="aaaa" />
                 <Input input-type="textarea" placeholder="Enter Input..." class="no-resize inputText" :value="aaaa"
-                    @update:value="useThrottle($event, handleAAAAInput, 500)"></Input>
+                    @update:value="useThrottle($event, handleAAAAInput)"></Input>
             </div>
             <div class="bbbb">
                 <InputOptions label="bbbb:" @reset="clearBBBB" @paste="handleBBBBInput" :copyContent="bbbb" />
                 <Input input-type="textarea" placeholder="Enter Input..." class="no-resize inputText" :value="bbbb"
-                    @update:value="useThrottle($event, handleBBBBInput, 500)"></Input>
+                    @update:value="useThrottle($event, handleBBBBInput)"></Input>
             </div>
         </div>
         <div class="bottom">

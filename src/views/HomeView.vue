@@ -75,7 +75,7 @@ onMounted(() => {
       Your go to place for dev utilities & tools.
     </div>
     <br />
-    <SearchInput placeholder="Search..." class="searchBox" @update:value="useThrottle($event, handleChange, 100)"
+    <SearchInput placeholder="Search..." class="searchBox" @update:value="useThrottle($event, handleChange)"
       @reset="reset" />
     <ui-collapse with-icon ripple class="collapse" v-model="expandedSections[0]" v-show="!isSearchState">
       <template #toggle>

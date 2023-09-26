@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import Input from "@/components/InputComponent.vue";
 import InputOptions from "@/components/InputOptionsComponent.vue";
 import OutputOptions from "@/components/OutputOptionsComponent.vue";
-import Input from "@/components/InputComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
+import { ref, watchEffect, type Ref } from "vue";
 import FormatJSON from ".";
-import { ref, type Ref, watchEffect } from "vue";
 
 const value: Ref<string> = ref('{"data": {"msg": "hello world"},"status": 200}');
 const output: Ref<string> = ref(value.value);
@@ -36,7 +36,7 @@ function clearInput() {
             <InputOptions @reset="clearInput" @paste="handleUpdate" :copyContent="value" />
             <Input input-type="textarea" placeholder="Enter content to hash..."
                 :class="'no-resize inputText ' + (error && 'error')" label="Input" :value="value"
-                @update:value="useThrottle($event, handleUpdate, 500)"></Input>
+                @update:value="useThrottle($event, handleUpdate)"></Input>
             <ui-textfield-helper v-show="error" :visible="true" :class="{ errorHelper: error }">Invalid
                 JSON</ui-textfield-helper>
         </div>

@@ -60,7 +60,7 @@ function handleFile(files: BalmUIFile[]) {
         <div class="inputSection">
             <InputOptions label="Input:" @reset="clearInput" @paste="handlePaste" :copyContent="value" />
             <Input input-type="textarea" placeholder="Enter Markdown..." class="no-resize inputText" label="Input"
-                :value="value" @update:value="useThrottle($event, handleInput, 500)"></Input>
+                :value="value" @update:value="useThrottle($event, handleInput)"></Input>
             <ui-divider>OR</ui-divider>
             <ui-file accept=".md" @change="handleFile">
                 <ui-button icon="file_upload" class="upload">Upload File</ui-button>

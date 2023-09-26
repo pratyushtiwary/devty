@@ -1,15 +1,7 @@
 /* eslint-disable no-console */
 import fs from 'fs'
 import path from 'path'
-import { type Route } from './src/types/route'
-
-interface CustomRoute extends Route {
-  creation?: Date
-}
-
-interface CustomRoutes {
-  [slug: string]: CustomRoute
-}
+import { type Routes } from './src/types/route'
 
 function generateRoutes() {
   console.clear()
@@ -30,7 +22,7 @@ function generateRoutes() {
 
   console.log(`Found ${modules.length} module(s), generating routes...`)
 
-  const routesList: CustomRoutes = {}
+  const routesList: Routes = {}
 
   for (let i = 0; i < modules.length; i++) {
     const modulePath = path.join(modulesPath, modules[i]),

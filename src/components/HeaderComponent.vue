@@ -79,7 +79,7 @@ function handleRouteChange() {
             </ui-drawer-title>
             <ui-drawer-subtitle class="colorText">Your go to place for dev utilities & tools.</ui-drawer-subtitle>
         </ui-drawer-header>
-        <SearchInput placeholder="Search..." class="searchInput" @update:value="useThrottle($event, handleSearch, 100)"
+        <SearchInput placeholder="Search..." class="searchInput" @update:value="useThrottle($event, handleSearch)"
             @reset="resetSearch" />
         <ui-drawer-content>
             <ui-nav>
