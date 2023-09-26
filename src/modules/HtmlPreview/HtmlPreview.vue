@@ -9,18 +9,31 @@ import sanitize from ".";
 const value: Ref<string> = ref("<h1>Heading</h1>")
 const snackbar = useSnackbar()
 const iframe: Ref<HTMLIFrameElement | undefined> = ref()
-let headElem: HTMLElement | null | undefined = undefined;
-let bodyElem: HTMLElement | null | undefined = undefined;
 let colors: CSSStyleDeclaration | undefined = undefined;
 
 onMounted(() => {
     if (iframe.value) {
-        headElem = iframe.value.contentWindow?.document?.querySelector('head')
-        bodyElem = iframe.value.contentWindow?.document?.querySelector('body')
         let root = document.querySelector(':root');
         if (root) {
             colors = getComputedStyle(root);
         }
+
+        let body = sanitize(value.value);
+        let head = ''
+        if (colors) {
+            head = `<style>
+            body{
+                color: ${colors.getPropertyValue('--color-text')};
+                background-color: ${colors.getPropertyValue('--color-background')};
+            }
+        </style>`
+        }
+
+        setTimeout(() => {
+            iframe.value.contentWindow.document.querySelector('head').innerHTML = head
+
+            iframe.value.contentWindow.document.querySelector('body').innerHTML = body
+        })
     }
 })
 
@@ -36,13 +49,9 @@ watchEffect(() => {
                 }
             </style>`
         }
-        if (headElem) {
-            headElem.innerHTML = head
-        }
+        iframe.value.contentWindow.document.querySelector('head').innerHTML = head
 
-        if (bodyElem) {
-            bodyElem.innerHTML = body
-        }
+        iframe.value.contentWindow.document.querySelector('body').innerHTML = body
     }
 })
 

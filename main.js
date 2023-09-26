@@ -7,11 +7,11 @@ const path = require('path')
 
 const createWindow = () => {
   const win = new BrowserWindow({
+    show: false,
     icon: './public/logo.png',
     frame: false,
-    width: 850,
-    height: 600,
     minWidth: 850,
+    minHeight: 600,
     webPreferences: {
       allowRunningInsecureContent: true,
       preload: path.join(__dirname, 'preload.js'),
@@ -36,6 +36,8 @@ const createWindow = () => {
       slashes: true
     })
   )
+  win.maximize()
+  win.show()
   if (isDev) {
     win.openDevTools()
   }

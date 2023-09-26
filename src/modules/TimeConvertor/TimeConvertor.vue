@@ -42,7 +42,7 @@ function handleDateChange(newVal: string) {
     <div class="container">
         <div class="input">
             <Input label="Unix Time" type="number" class="fullWidth" :value="unix"
-                @update:value="useThrottle($event, handleChange, 500)" />
+                @update:value="useThrottle($event, handleChange)" />
             <ui-divider>OR</ui-divider>
             <ui-datepicker class="fullWidth" outlined label="Select Date" :config="{ enableTime: true, dateFormat: format }"
                 v-model="timeStr" @update:modelValue="handleDateChange"></ui-datepicker>
