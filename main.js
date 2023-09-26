@@ -10,8 +10,8 @@ const createWindow = () => {
     show: false,
     icon: './public/logo.png',
     frame: false,
-    minWidth: 850,
     minHeight: 600,
+    minWidth: 850,
     webPreferences: {
       allowRunningInsecureContent: true,
       preload: path.join(__dirname, 'preload.js'),
