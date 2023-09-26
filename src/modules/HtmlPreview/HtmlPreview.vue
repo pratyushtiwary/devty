@@ -8,7 +8,7 @@ import sanitize from ".";
 
 const value: Ref<string> = ref("<h1>Heading</h1>")
 const snackbar = useSnackbar()
-const iframe: Ref<HTMLIFrameElement | undefined> = ref()
+const iframe = ref<HTMLIFrameElement>()
 let colors: CSSStyleDeclaration | undefined = undefined;
 
 onMounted(() => {
@@ -30,8 +30,9 @@ onMounted(() => {
         }
 
         setTimeout(() => {
+            // @ts-ignore
             iframe.value.contentWindow.document.querySelector('head').innerHTML = head
-
+            // @ts-ignore
             iframe.value.contentWindow.document.querySelector('body').innerHTML = body
         })
     }
@@ -49,8 +50,9 @@ watchEffect(() => {
                 }
             </style>`
         }
+        // @ts-ignore
         iframe.value.contentWindow.document.querySelector('head').innerHTML = head
-
+        // @ts-ignore
         iframe.value.contentWindow.document.querySelector('body').innerHTML = body
     }
 })
