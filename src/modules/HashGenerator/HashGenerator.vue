@@ -19,7 +19,7 @@ function handleUpdate(newVal: string) {
 
 function clearInput() {
     value.value = "";
-    output.value = "";
+    process()
 }
 </script>
 

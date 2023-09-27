@@ -44,9 +44,16 @@ const createWindow = () => {
   })
 
   session.defaultSession.webRequest.onBeforeRequest((details, callback) => {
-    if (Object.keys(REDIRECTIONS).includes(details.url.split('/').pop())) {
+    const filename = details.url.split('/').pop()
+    const isAbs =
+      details.url.replace(
+        'file:///' + path.parse(details.url.slice('file:///'.length)).root,
+        ''
+      ) === filename
+
+    if (Object.keys(REDIRECTIONS).includes(filename) && isAbs) {
       callback({
-        redirectURL: REDIRECTIONS[details.url]
+        redirectURL: REDIRECTIONS[filename]
       })
       return
     }
