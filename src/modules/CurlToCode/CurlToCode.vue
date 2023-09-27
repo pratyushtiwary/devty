@@ -5,7 +5,7 @@ import OutputOptions from "@/components/OutputOptionsComponent.vue";
 import Select from "@/components/SelectComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
 import type SelectEvent from "@/types/select";
-import { ref, watchEffect } from "vue";
+import { ref } from "vue";
 import convert, { SUPPORTED_CONVERTERS, type SUPPORTED_LANGUAGES } from ".";
 
 const input = ref<string>(`curl 'http://fiddle.jshell.net/echo/html/' \\
@@ -23,7 +23,7 @@ const language = ref<SUPPORTED_LANGUAGES>("javascript");
 const output = ref<string>(convert(input.value, language.value));
 const error = ref<string | null>(null);
 
-watchEffect(() => {
+function process() {
     try {
         output.value = convert(input.value, language.value);
         error.value = null;
@@ -31,19 +31,23 @@ watchEffect(() => {
         if (e instanceof Error)
             error.value = e.message.split("\n")[0];
     }
-})
+}
 
 function handleUpdate(newVal: string) {
     input.value = newVal;
+    process()
 }
 
 function changeLanguage(e: SelectEvent) {
-    if (Object.keys(SUPPORTED_CONVERTERS).includes(e.value))
+    if (Object.keys(SUPPORTED_CONVERTERS).includes(e.value)) {
         language.value = e.value as SUPPORTED_LANGUAGES;
+        process()
+    }
 }
 
 function clearInput() {
     input.value = "";
+    process()
 }
 </script>
 

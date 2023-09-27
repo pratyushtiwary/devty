@@ -3,7 +3,7 @@ import Input from "@/components/InputComponent.vue";
 import InputOptions from "@/components/InputOptionsComponent.vue";
 import StyledInput from "@/components/StyledInputComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
-import { ref, watchEffect, type Ref } from "vue";
+import { ref, type Ref } from "vue";
 import jwtActions, { Colorize, supportedAlgos } from '.';
 
 const realVal: Ref<string> = ref('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c');
@@ -21,7 +21,7 @@ const selectedAlgo = ref(supportedAlgos[0]);
 const signatureValid: Ref<boolean> = ref(true)
 
 
-watchEffect(() => {
+function process() {
     coloredVal.value = Colorize(realVal.value, ['red', 'purple', 'blue'])
     try {
         const tempDecoded = jwtActions.getHeaders(realVal.value)
@@ -33,23 +33,27 @@ watchEffect(() => {
     } catch (_) {
         errors.value[0] = true
     }
-})
+}
 
 function handleUpdate(newVal: string) {
     realVal.value = newVal;
     validateSignature();
+    process()
 }
 
 function handlePasteText(newVal: string) {
     realVal.value = newVal
+    process()
 }
 
 function handlePasteHeader(newVal: string) {
     handleHeaderUpdate(newVal)
+    process()
 }
 
 function handlePastePayload(newVal: string) {
     handlePayloadUpdate(newVal)
+    process()
 }
 
 
@@ -65,6 +69,7 @@ async function handleAlgoChange(e) {
         keys.value = ['', jwtDetails.publicKey]
     keys.value = [jwtDetails.privateKey, jwtDetails.publicKey]
     validateSignature();
+    process()
 }
 
 async function handleHeaderUpdate(newVal: string) {
@@ -78,6 +83,7 @@ async function handleHeaderUpdate(newVal: string) {
         realVal.value = jwtDetails.token
         keys.value = [jwtDetails.privateKey, jwtDetails.publicKey]
         validateSignature();
+        process()
         errors.value[1] = false
     } catch (_) {
         errors.value[1] = true
@@ -95,6 +101,7 @@ async function handlePayloadUpdate(newVal: string) {
         realVal.value = jwtDetails.token
         keys.value = [jwtDetails.privateKey, jwtDetails.publicKey]
         validateSignature();
+        process()
         errors.value[2] = false
     } catch (_) {
         errors.value[2] = true
@@ -118,12 +125,14 @@ async function handleHashChange() {
                 key: keys.value[0]
             })
             realVal.value = jwtDetails.token
+            process()
         } catch (_) { /* empty */ }
     }
 }
 
 function clearInput() {
     realVal.value = "";
+    process()
 }
 
 function clearHeaderInput() {

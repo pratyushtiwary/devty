@@ -12,12 +12,13 @@
   ],
   "main": "main.js",
   "build": {
-    "appId": "com.devty",
+    "appId": "app.vercel.devty",
     "productName": "Devty",
     "directories": {
-      "buildResources": "dist"
+      "output": "build"
     },
     "win": {
+      "target": "portable",
       "icon": "./dist/logo.png"
     },
     "linux": {

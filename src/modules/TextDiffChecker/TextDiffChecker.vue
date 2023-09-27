@@ -5,7 +5,7 @@ import OutputOptions from "@/components/OutputOptionsComponent.vue";
 import Select from "@/components/SelectComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
 import type SelectEvent from "@/types/select";
-import { ref, watchEffect, type Ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import textDiff, { type diffType } from ".";
 
 const aaaa: Ref<string> = ref(`aaaa\n\nbbbb`);
@@ -13,7 +13,9 @@ const bbbb: Ref<string> = ref(`abba\n\n\nbaab`);
 const type: Ref<diffType> = ref('lines');
 const outputElem = ref<HTMLDivElement>();
 
-watchEffect(() => {
+onMounted(process)
+
+function process() {
     if (!(outputElem.value instanceof HTMLDivElement)) return;
     outputElem.value.innerHTML = '';
     textDiff(aaaa.value, bbbb.value, type.value).forEach((e) => {
@@ -21,27 +23,33 @@ watchEffect(() => {
             outputElem.value.append(e);
         }
     });
-});
+};
 
 function handleAAAAInput(content: string) {
     aaaa.value = content;
+    process()
 }
 
 function clearAAAA() {
     aaaa.value = "";
+    process()
 }
 
 function handleBBBBInput(content: string) {
     bbbb.value = content;
+    process()
 }
 
 function clearBBBB() {
     bbbb.value = "";
+    process()
 }
 
 function changeType(e: SelectEvent) {
-    if (e.value === "lines" || e.value === "words" || e.value === "chars")
+    if (e.value === "lines" || e.value === "words" || e.value === "chars") {
         type.value = e.value;
+        process()
+    }
 }
 </script>
 
