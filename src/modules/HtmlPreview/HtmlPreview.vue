@@ -3,7 +3,7 @@ import Input from "@/components/InputComponent.vue";
 import InputOptions from "@/components/InputOptionsComponent.vue";
 import { useSnackbar } from "@/stores/snackbar";
 import type BalmUIFile from "@/types/file";
-import { onMounted, ref, watchEffect, type Ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import sanitize from ".";
 
 const value: Ref<string> = ref("<h1>Heading</h1>")
@@ -38,7 +38,7 @@ onMounted(() => {
     }
 })
 
-watchEffect(() => {
+function render() {
     let body = sanitize(value.value);
     let head = ''
     if (iframe.value) {
@@ -55,18 +55,21 @@ watchEffect(() => {
         // @ts-ignore
         iframe.value.contentWindow.document.querySelector('body').innerHTML = body
     }
-})
+}
 
 function clearInput() {
     value.value = ''
+    render()
 }
 
 function handlePaste(newVal: string) {
     value.value = newVal
+    render()
 }
 
 async function handleInput(newVal: string) {
     value.value = newVal
+    render()
 }
 
 function handleFile(files: BalmUIFile[]) {
@@ -87,6 +90,7 @@ function handleFile(files: BalmUIFile[]) {
     fileReader.onloadend = () => {
         if (typeof fileReader.result === "string") {
             value.value = fileReader.result
+            render()
         } else {
             snackbar.show('Failed to read file', 'error')
         }

@@ -3,29 +3,25 @@
   "description": "Developer tools and utilities",
   "version": "0.0.4",
   "private": true,
-  "contributors": [
-    {
-      "name": "Pratyush Tiwary",
-      "email": "pratyushtiwary33@gmail.com",
-      "url": "http://github.com/pratyushtiwary/"
-    }
-  ],
+  "author": {
+    "name": "Pratyush Tiwary",
+    "email": "pratyushtiwary33@gmail.com",
+    "url": "http://github.com/pratyushtiwary/"
+  },
   "main": "main.js",
   "build": {
-    "appId": "com.devty",
+    "appId": "app.vercel.devty",
     "productName": "Devty",
     "directories": {
-      "buildResources": "dist"
+      "output": "build"
     },
     "win": {
       "icon": "./dist/logo.png"
     },
     "linux": {
-      "target": [
-        "AppImage"
-      ],
-      "category": "Utility",
-      "icon": "./dist/logo.png"
+      "target": "deb",
+      "icon": "./logo_256x256.icns",
+      "category": "Utility"
     },
     "files": [
       "dist/**/*",

@@ -4,8 +4,9 @@ import LoadModule from "@/components/LoadModuleComponent.vue";
 import { useRoutes } from '@/stores/routes';
 import { type Route } from '@/types/route';
 import { onMounted, onUpdated, ref, type Ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
+const router = useRouter();
 const route = useRoute();
 const routes = useRoutes();
 const slug: Ref<string> = ref(route.params.slug.toString());
@@ -14,7 +15,13 @@ let routeDetails: Ref<Route | undefined> = ref(undefined);
 if (typeof slug.value === 'string') {
     const temp = routes.getRoute(slug.value);
     routeDetails.value = temp;
-    document.title = temp.name + " - Devty";
+    if (temp) {
+        document.title = temp.name + " - Devty";
+    }
+
+    if (!routeDetails.value) {
+        router.push({ name: 'home' });
+    }
 }
 
 onUpdated(() => {
@@ -23,7 +30,13 @@ onUpdated(() => {
     if (typeof slug.value === 'string') {
         const temp = routes.getRoute(slug.value);
         routeDetails.value = temp;
-        document.title = temp.name + " - Devty"
+        if (temp?.name) {
+            document.title = temp.name + " - Devty"
+        }
+    }
+
+    if (!routeDetails.value) {
+        router.push({ name: 'home' });
     }
 
     window.scrollTo(0, 0);
@@ -36,7 +49,6 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="error" v-if="!routeDetails">Error</div>
     <div class="main" v-if="routeDetails">
         <Header></Header>
         <LoadModule :dir="routeDetails.dir"></LoadModule>

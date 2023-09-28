@@ -3,7 +3,7 @@ import Input from "@/components/InputComponent.vue";
 import InputOptions from "@/components/InputOptionsComponent.vue";
 import OutputOptions from "@/components/OutputOptionsComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
-import { ref, watchEffect, type Ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import urlActions from ".";
 
 interface URLElement {
@@ -20,7 +20,9 @@ const invalidURL: Ref<boolean> = ref(false);
 const head = ['Field', 'Value'];
 const body = ['field', 'value'];
 
-watchEffect(() => {
+onMounted(process)
+
+function process() {
     if (input.value) {
         try {
             const temp = urlActions.parseURL(input.value);
@@ -43,14 +45,16 @@ watchEffect(() => {
         data.value = [];
         queryString.value = `{}`;
     }
-});
+};
 
 function handleUpdate(newVal: string) {
     input.value = newVal;
+    process()
 }
 
 function clearInput() {
     input.value = "";
+    process()
 }
 </script>
 

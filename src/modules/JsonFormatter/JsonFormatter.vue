@@ -3,29 +3,31 @@ import Input from "@/components/InputComponent.vue";
 import InputOptions from "@/components/InputOptionsComponent.vue";
 import OutputOptions from "@/components/OutputOptionsComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
-import { ref, watchEffect, type Ref } from "vue";
+import { ref, type Ref } from "vue";
 import FormatJSON from ".";
 
 const value: Ref<string> = ref('{"data": {"msg": "hello world"},"status": 200}');
-const output: Ref<string> = ref(value.value);
+const output: Ref<string> = ref(FormatJSON(value.value));
 const error: Ref<boolean> = ref(false);
 
-watchEffect(() => {
+function format() {
     try {
         output.value = FormatJSON(value.value);
         error.value = false;
     } catch (e) {
         error.value = true;
     }
-})
+}
 
 function handleUpdate(newVal: string) {
     value.value = newVal;
+    format()
 }
 
 
 function clearInput() {
     value.value = "";
+    output.value = "";
 }
 
 </script>

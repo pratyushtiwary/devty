@@ -3,7 +3,7 @@ import Input from "@/components/InputComponent.vue";
 import InputOptions from "@/components/InputOptionsComponent.vue";
 import StyledInput from "@/components/StyledInputComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
-import { ref, watchEffect, type Ref } from "vue";
+import { ref, type Ref } from "vue";
 import matcher, { highlight } from ".";
 
 const regex: Ref<string> = ref("([A-Z])\\w+")
@@ -12,14 +12,14 @@ const outputFmt: Ref<string> = ref('$0\\n');
 const output: Ref<string> = ref(matcher(regex.value, text.value, outputFmt.value));
 const outputHtml: Ref<string> = ref(highlight(regex.value, text.value))
 
-watchEffect(() => {
+function match() {
     output.value = matcher(regex.value, text.value, outputFmt.value);
     outputHtml.value = highlight(regex.value, text.value)
-});
-
+}
 
 function handleRegexChange(newVal: string) {
     regex.value = newVal;
+    match()
 }
 
 function handleRegexPaste(newVal: string) {
@@ -28,9 +28,11 @@ function handleRegexPaste(newVal: string) {
 
 function handlePasteText(newVal: string) {
     text.value = newVal
+    match()
 }
 function handleOutputFmtChange(newVal: string) {
     outputFmt.value = newVal;
+    match()
 }
 
 function handleOutputFmtPaste(newVal: string) {
@@ -39,14 +41,17 @@ function handleOutputFmtPaste(newVal: string) {
 
 function handleUpdate(newVal: string) {
     text.value = newVal;
+    match()
 }
 
 function clear() {
     regex.value = '';
+    match()
 }
 
 function clearOutput() {
     outputFmt.value = '$0\\n';
+    match()
 }
 </script>
 

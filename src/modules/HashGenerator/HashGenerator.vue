@@ -1,23 +1,25 @@
 <script setup lang="ts">
-import InputOptions from "@/components/InputOptionsComponent.vue";
 import Input from "@/components/InputComponent.vue";
-import generateHash, { type GenerateHashReturn } from ".";
+import InputOptions from "@/components/InputOptionsComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
-import { ref, type Ref, watchEffect } from "vue";
+import { ref, type Ref } from "vue";
+import generateHash, { type GenerateHashReturn } from ".";
 
 const value: Ref<string> = ref('Hello World');
 const output: Ref<GenerateHashReturn> = ref(generateHash(value.value));
 
-watchEffect(() => {
+function process() {
     output.value = generateHash(value.value);
-})
+}
 
 function handleUpdate(newVal: string) {
     value.value = newVal;
+    process()
 }
 
 function clearInput() {
     value.value = "";
+    process()
 }
 </script>
 

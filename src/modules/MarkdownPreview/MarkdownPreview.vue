@@ -5,27 +5,30 @@ import OutputOptions from "@/components/OutputOptionsComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
 import { useSnackbar } from "@/stores/snackbar";
 import type BalmUIFile from "@/types/file";
-import { ref, watchEffect, type Ref } from "vue";
+import { ref, type Ref } from "vue";
 import convert from ".";
 
 const value: Ref<string> = ref("# Heading")
 const output: Ref<string> = ref('')
 const snackbar = useSnackbar()
 
-watchEffect(async () => {
+async function process() {
     output.value = await convert(value.value)
-})
+}
 
 function clearInput() {
     value.value = ''
+    output.value = ''
 }
 
-function handlePaste(newVal: string) {
+async function handlePaste(newVal: string) {
     value.value = newVal
+    await process()
 }
 
 async function handleInput(newVal: string) {
     value.value = newVal
+    await process()
 }
 
 function handleFile(files: BalmUIFile[]) {
@@ -42,9 +45,10 @@ function handleFile(files: BalmUIFile[]) {
         return
     }
 
-    fileReader.onloadend = () => {
+    fileReader.onloadend = async () => {
         if (typeof fileReader.result === "string") {
             value.value = fileReader.result
+            await process()
         } else {
             snackbar.show('Failed to read file', 'error')
         }
