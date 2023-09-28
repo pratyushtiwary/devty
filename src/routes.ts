@@ -55,6 +55,11 @@ const routes: Routes = {
         "name": "Markdown Preview",
         "image": "markdown_icon.svg"
     },
+    "qr_code": {
+        "dir": "QrCode",
+        "name": "QR Code Reader/Generator",
+        "icon": "qr_code_2"
+    },
     "regexp_tester": {
         "dir": "RegexpTester",
         "name": "RegExp Tester",
