@@ -3,13 +3,11 @@
   "description": "Developer tools and utilities",
   "version": "0.0.4",
   "private": true,
-  "contributors": [
-    {
-      "name": "Pratyush Tiwary",
-      "email": "pratyushtiwary33@gmail.com",
-      "url": "http://github.com/pratyushtiwary/"
-    }
-  ],
+  "author": {
+    "name": "Pratyush Tiwary",
+    "email": "pratyushtiwary33@gmail.com",
+    "url": "http://github.com/pratyushtiwary/"
+  },
   "main": "main.js",
   "build": {
     "appId": "app.vercel.devty",
@@ -18,15 +16,14 @@
       "output": "build"
     },
     "win": {
-      "target": "portable",
       "icon": "./dist/logo.png"
     },
     "linux": {
-      "target": [
-        "AppImage"
-      ],
-      "category": "Utility",
+      "target": "deb",
       "icon": "./dist/logo.png"
+    },
+    "deb": {
+      "packageCategory": "Utility"
     },
     "files": [
       "dist/**/*",
@@ -49,8 +46,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
     "electron:dev": "electron .",
-    "electron:build-linux": "electron-builder  --linux --publish always",
-    "electron:build-windows": "electron-builder  --windows --publish always",
+    "electron:build-linux": "electron-builder  --linux --publish never",
+    "electron:build-windows": "electron-builder  --windows --publish never",
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
