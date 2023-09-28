@@ -20,10 +20,8 @@
     },
     "linux": {
       "target": "deb",
-      "icon": "./dist/logo.png"
-    },
-    "deb": {
-      "packageCategory": "Utility"
+      "icon": "./logo_256x256.icns",
+      "category": "Utility"
     },
     "files": [
       "dist/**/*",
@@ -46,8 +44,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
     "electron:dev": "electron .",
-    "electron:build-linux": "electron-builder  --linux --publish never",
-    "electron:build-windows": "electron-builder  --windows --publish never",
+    "electron:build-linux": "electron-builder  --linux --publish always",
+    "electron:build-windows": "electron-builder  --windows --publish always",
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
