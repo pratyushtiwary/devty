@@ -1,9 +1,11 @@
 name: Build & Publish
 
 on:
-  push:
-    tags:
-      - 'v*'
+  pull_request:
+    branches: [main]
+  # push:
+  # tags:
+  #   - 'v*'
 
 jobs:
   build:
