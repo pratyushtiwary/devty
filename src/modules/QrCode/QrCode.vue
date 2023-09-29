@@ -7,35 +7,38 @@ import useDownload from '@/hooks/useDownload'
 import useThrottle from '@/hooks/useThrottle'
 import type SelectEvent from '@/types/select'
 import type BalmUIFile from '@/types/file'
-import { ref, type Ref, watchEffect } from 'vue'
+import { ref, type Ref } from 'vue'
 import { SUPPORTED_TEMPLATES, SUPPORTED_TEMPLATES_KEYS, generateQRCode, readQRCode } from '.'
 
-const template = ref<SUPPORTED_TEMPLATES_KEYS>('vcard')
+const template: Ref<SUPPORTED_TEMPLATES_KEYS> = ref('vcard')
 const value: Ref<string> = ref(SUPPORTED_TEMPLATES.vcard.template)
 
 const output: Ref<string> = ref('')
 const showOutputOptions: Ref<boolean> = ref(false)
 const error: Ref<{ show: boolean; message: string }> = ref({ show: false, message: '' })
-
-watchEffect(async () => {
-  output.value = await generateQRCode(value.value || output.value)
-  showOutputOptions.value = Boolean(value.value || output.value)
-})
-
-function changeTemplate(e: SelectEvent) {
-  if (Object.keys(SUPPORTED_TEMPLATES).includes(e.value))
+async function changeTemplate(e: SelectEvent) {
+  if (Object.keys(SUPPORTED_TEMPLATES).includes(e.value)) {
     template.value = e.value as SUPPORTED_TEMPLATES_KEYS
-  value.value = SUPPORTED_TEMPLATES[e.value].template
+    value.value = SUPPORTED_TEMPLATES[e.value].template
+    output.value = await generateQRCode(value.value)
+    showOutputOptions.value = true
+  }
   if (error.value.show) error.value.show = false
 }
 
-function handleUpdate(newVal: string) {
+async function handleUpdate(newVal: string) {
+  showOutputOptions.value = !!newVal
   value.value = newVal
+  output.value = await generateQRCode(newVal)
 }
 
 function clearInput() {
   value.value = ''
+  output.value = ''
+  showOutputOptions.value = false
+  error.value.show = false
 }
+
 async function handleFile(files: BalmUIFile[]) {
   try {
     const file: File = files[0].sourceFile
@@ -44,6 +47,7 @@ async function handleFile(files: BalmUIFile[]) {
     error.value.show = false
   } catch (e) {
     value.value = ''
+    output.value = ''
     error.value.show = true
     error.value.message = e
   }
@@ -52,21 +56,18 @@ async function handleFile(files: BalmUIFile[]) {
 function handleSave() {
   useDownload(output.value)
 }
+
+const templateOptions = Object.entries(SUPPORTED_TEMPLATES).map(([key, value]) => ({
+  label: value.label,
+  value: key
+}))
 </script>
 
 <template>
   <div class="container">
     <div class="inputSection">
       <InputOptions label="Content:" @reset="clearInput" @paste="handleUpdate" :copyContent="value">
-        <Select
-          :options="
-            Object.entries(SUPPORTED_TEMPLATES).map(([key, value]) => ({
-              label: value.label,
-              value: key
-            }))
-          "
-          :value="template"
-          @selected="changeTemplate"
+        <Select :options="templateOptions" :value="template" @selected="changeTemplate"
           >Template</Select
         >
       </InputOptions>
