@@ -5,16 +5,18 @@ import { ref, watchEffect, type Ref } from 'vue';
 const bottom: Ref<number> = ref(0);
 const props = defineProps(['state', 'visible', 'content']);
 const snackbar = useSnackbar();
+const snackbarElem = ref<HTMLDivElement>();
 let dialogElem: null | HTMLElement = null;
 
 watchEffect(() => {
     if (props.visible) {
         dialogElem = document.querySelector('[aria-role="dialog"]');
 
-        if (dialogElem) {
-            const { y, height } = dialogElem.getBoundingClientRect();
-            // is the dialog at the bottom of the screen?
-            if (y + height === window.innerHeight) {
+        if (dialogElem && snackbarElem.value) {
+            const { right: snackbarRight } = snackbarElem.value.getBoundingClientRect();
+            const { y, height, left } = dialogElem.getBoundingClientRect();
+            // is the dialog at the bottom-left of the screen?
+            if ((y + height) / window.innerHeight > 0.8 && snackbarRight >= left) {
                 bottom.value = height;
             }
         }
@@ -30,7 +32,7 @@ watchEffect(() => {
     <div :class="{
         'snackbar': true,
         'show': visible
-    }" :style="'bottom: ' + bottom + 'px;'">
+    }" :style="'bottom: ' + bottom + 'px;'" ref="snackbarElem">
         <ui-alert class="alert" stateOutlined :state="state">{{ content }}</ui-alert>
     </div>
 </template>

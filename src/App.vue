@@ -82,8 +82,8 @@ window.addEventListener('appinstalled', () => {
   <div :class="{ 'installation-banner': true, 'open': showBanner }" v-if="showBanner" aria-role="dialog">
     Install Devty as app? It won't take much space and will work offline!
     <div class="actions">
-      <ui-button @click="hideBanner">Dismiss</ui-button>
-      <ui-button @click="installApp">Install</ui-button>
+      <ui-button @click="hideBanner" outlined>Dismiss</ui-button>
+      <ui-button @click="installApp" outlined>Install</ui-button>
     </div>
   </div>
   <RouterView />
@@ -95,11 +95,13 @@ window.addEventListener('appinstalled', () => {
   display: flex;
   flex-direction: column;
   position: fixed;
-  top: 0%;
-  left: 0;
-  width: 100%;
-  background-color: var(--color-background) !important;
-  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.25);
+  bottom: 10px;
+  right: 10px;
+  width: fit-content;
+  background-color: rgba(var(--color-background-rgb), 0.975) !important;
+  backdrop-filter: blur(5px);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
   color: var(--color-text) !important;
   padding: 30px 15px;
   font-size: 1.25rem;
@@ -121,12 +123,17 @@ window.addEventListener('appinstalled', () => {
 .installation-banner .actions {
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
+  margin-top: 5px;
 }
 
 @media screen and (max-width: 800px) {
   .installation-banner {
-    top: auto;
+    right: auto;
+    left: 0;
     bottom: 0;
+    margin: 0 10px 10px 10px;
+    font-size: 1rem;
     transform: none;
   }
 

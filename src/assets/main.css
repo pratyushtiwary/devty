@@ -1,5 +1,9 @@
 @import './base.css';
 
+/*
+Use this file to overwrite styles
+*/
+
 .mdc-text-field--textarea textarea,
 .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {
     color: var(--color-text) !important;
@@ -217,4 +221,8 @@ pre code.hljs {
     top: 0;
     z-index: 3;
     background-color: var(--color-background);
+}
+
+.mdc-button--outlined:not(:disabled) {
+    border-color: var(--color-border) !important;
 }
