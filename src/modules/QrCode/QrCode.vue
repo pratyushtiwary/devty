@@ -7,10 +7,13 @@ import useDownload from '@/hooks/useDownload'
 import useThrottle from '@/hooks/useThrottle'
 import type SelectEvent from '@/types/select'
 import type BalmUIFile from '@/types/file'
-import { ref, type Ref } from 'vue'
-import { SUPPORTED_TEMPLATES, SUPPORTED_TEMPLATES_KEYS, generateQRCode, readQRCode } from '.'
 
-const template: Ref<SUPPORTED_TEMPLATES_KEYS> = ref('vcard')
+import { ref, type Ref } from 'vue'
+import { SUPPORTED_TEMPLATES, generateQRCode, readQRCode } from '.'
+
+import type { SUPPORTED_TEMPLATES_KEYS } from '.'
+
+const template: Ref<string> = ref('vcard')
 const value: Ref<string> = ref(SUPPORTED_TEMPLATES.vcard.template)
 
 const output: Ref<string> = ref('')
@@ -49,7 +52,7 @@ async function handleFile(files: BalmUIFile[]) {
     value.value = ''
     output.value = ''
     error.value.show = true
-    error.value.message = e
+    error.value.message = e as string
   }
 }
 

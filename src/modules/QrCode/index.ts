@@ -25,8 +25,14 @@ export async function readQRCode(value: File): Promise<string> {
   })
   return await QrScanner.scanImage(base64Image)
 }
+interface SupportedTemplates {
+  [key: string]: {
+    label: string
+    template: string
+  }
+}
 
-export const SUPPORTED_TEMPLATES = {
+export const SUPPORTED_TEMPLATES: SupportedTemplates = {
   url: {
     label: 'URL',
     template: 'https://example.com'
@@ -59,4 +65,4 @@ export const SUPPORTED_TEMPLATES = {
   }
 }
 
-export type SUPPORTED_TEMPLATES_KEYS = keyof typeof SUPPORTED_TEMPLATES
+export type SUPPORTED_TEMPLATES_KEYS = Extract<keyof typeof SUPPORTED_TEMPLATES, string>
