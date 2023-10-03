@@ -30,7 +30,6 @@ function copy() {
             <ui-button icon="content_paste" @click="pasteContent" v-if="!hideClipboard">Clipboard</ui-button>
             <ui-button icon="clear" @click="$emit('reset')" v-if="!hideReset">Reset</ui-button>
         </div>
-        <slot />
     </div>
 </template>
 

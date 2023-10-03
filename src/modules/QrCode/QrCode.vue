@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import InputOptions from '@/components/InputOptionsComponent.vue'
 import Input from '@/components/InputComponent.vue'
+import InputOptions from '@/components/InputOptionsComponent.vue'
 import OutputImageOptions from '@/components/OutputImageOptionsComponent.vue'
 import Select from '@/components/SelectComponent.vue'
 import useDownload from '@/hooks/useDownload'
 import useThrottle from '@/hooks/useThrottle'
-import type SelectEvent from '@/types/select'
 import type BalmUIFile from '@/types/file'
+import type SelectEvent from '@/types/select'
+import Base64Image from "../Base64Image"
+
 
 import { ref, type Ref } from 'vue'
-import { SUPPORTED_TEMPLATES, generateQRCode, readQRCode } from '.'
+import { generateQRCode, readQRCode, SUPPORTED_TEMPLATES } from '.'
 
 import type { SUPPORTED_TEMPLATES_KEYS } from '.'
 
@@ -45,8 +47,8 @@ function clearInput() {
 async function handleFile(files: BalmUIFile[]) {
   try {
     const file: File = files[0].sourceFile
-    output.value = await readQRCode(file)
-    value.value = output.value
+    output.value = await Base64Image(file)
+    value.value = await readQRCode(file)
     error.value.show = false
   } catch (e) {
     value.value = ''
@@ -69,41 +71,20 @@ const templateOptions = Object.entries(SUPPORTED_TEMPLATES).map(([key, value]) =
 <template>
   <div class="container">
     <div class="inputSection">
-      <InputOptions label="Content:" @reset="clearInput" @paste="handleUpdate" :copyContent="value">
-        <Select :options="templateOptions" :value="template" @selected="changeTemplate"
-          >Template</Select
-        >
-      </InputOptions>
-      <Input
-        input-type="textarea"
-        placeholder="Enter content to generate qr code..."
-        :class="'no-resize inputText ' + (error.show && 'error')"
-        label="Input"
-        :value="value"
-        @update:value="useThrottle($event, handleUpdate)"
-      ></Input>
-      <ui-textfield-helper
-        v-show="error.show"
-        :visible="true"
-        :class="{ errorHelper: error.show }"
-        >{{ error.message }}</ui-textfield-helper
-      >
+      <InputOptions label="Content:" @reset="clearInput" @paste="handleUpdate" :copyContent="value" />
+      <Select :options="templateOptions" :value="template" @selected="changeTemplate" class="select">Template</Select>
+      <Input input-type="textarea" placeholder="Enter content to generate qr code..."
+        :class="'no-resize inputText ' + (error.show && 'error')" label="Input" :value="value"
+        @update:value="useThrottle($event, handleUpdate)"></Input>
+      <ui-textfield-helper v-show="error.show" :visible="true" :class="{ errorHelper: error.show }">{{ error.message
+      }}</ui-textfield-helper>
     </div>
     <div class="outputSection">
-      <OutputImageOptions
-        label="QR Code generated:"
-        :optionsVisible="showOutputOptions"
-        @save="handleSave"
-        @load="handleFile"
-      >
+      <OutputImageOptions label="QR Code generated:" :optionsVisible="showOutputOptions" @save="handleSave"
+        @load="handleFile">
       </OutputImageOptions>
 
-      <ui-file
-        accept="image/*"
-        title="Click to upload image file"
-        class="uploadInput"
-        @change="handleFile"
-      >
+      <ui-file accept="image/*" title="Click to upload image file" class="uploadInput" @change="handleFile">
         <ui-button icon="file_upload" class="uploadInputBtn" v-if="!output">Upload</ui-button>
         <img :src="output" alt="Base64 Image Decoded Output" v-if="output" class="uploadInputImg" />
       </ui-file>
@@ -125,6 +106,10 @@ const templateOptions = Object.entries(SUPPORTED_TEMPLATES).map(([key, value]) =
   flex-direction: column;
 }
 
+.inputSection .select {
+  margin: 5px 0;
+}
+
 .inputSection,
 .outputSection {
   margin-right: 5px;
@@ -139,12 +124,26 @@ const templateOptions = Object.entries(SUPPORTED_TEMPLATES).map(([key, value]) =
   margin-top: 5px;
   flex-grow: 1;
 }
+
 .mdc-file {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-grow: 1;
 }
+
+
+.outputSection .uploadInput {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
 @media screen and (max-width: 800px) {
   .container {
     display: block;

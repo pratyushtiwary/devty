@@ -1,36 +1,27 @@
 <script setup lang="ts">
-// import Input from "@/components/InputComponent.vue";
 import SearchInput from "@/components/SearchInputComponent.vue";
 import useStorage from "@/hooks/useStorage";
 import useThrottle from "@/hooks/useThrottle";
 import { useRoutes } from "@/stores/routes";
 import { useSnackbar } from '@/stores/snackbar';
-import { type Routes } from '@/types/route';
-import { onMounted, ref } from "vue";
+import { type NestedComponentRef } from '@/types/componentRef';
+import { onMounted, onUnmounted, ref } from "vue";
 import { RouterLink } from "vue-router";
 const snackbarStore = useSnackbar();
 
-const allRoutes = useRoutes().getRoutes();
+const routesState = useRoutes();
+const allRoutes = routesState.getRoutes();
 const routes = ref(allRoutes);
 const isSearchState = ref(false);
+const searchTerm = ref("");
+const searchInput = ref<NestedComponentRef>();
 const storage = useStorage();
 const starredModules = ref(new Set(storage.load("starredModules") || []));
 const expandedSections = ref([true, true]);
 
 function handleChange(newVal: string) {
-  const all = Object.keys(allRoutes);
-  const regex = new RegExp(newVal.toLowerCase(), 'g');
-  let validRoutes: Routes = {};
-
-  all.forEach(e => {
-    validRoutes[e] = {
-      ...allRoutes[e],
-      visible: Boolean(allRoutes[e].name.toLowerCase().match(regex))
-    }
-  })
-
-
-  routes.value = validRoutes
+  searchTerm.value = newVal;
+  routes.value = routesState.search(newVal)
   isSearchState.value = true;
 }
 
@@ -60,12 +51,28 @@ const starModule = (e: Event, moduleId: any) => {
   }
 }
 
+function handleKeyPress(e: KeyboardEvent) {
+  const key = e.key || e.code || e.which || e.keyCode;
+
+  if ((key === 'P' || key === 'KeyP' || key == 80) && e.ctrlKey) {
+    e.preventDefault()
+    if (searchInput?.value?.wrapper?.wrapper?.textfield?.querySelector) {
+      searchInput.value.wrapper!.wrapper!.textfield!.querySelector('input')!.focus()
+    }
+  }
+}
+
 onMounted(() => {
   document.title = 'Devty'
   if (starredModules.value.size === 0) {
     expandedSections.value[0] = false;
   }
+  window.addEventListener('keydown', handleKeyPress)
 });
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyPress)
+})
 </script>
 
 <template>
@@ -76,7 +83,7 @@ onMounted(() => {
     </div>
     <br />
     <SearchInput placeholder="Search..." class="searchBox" @update:value="useThrottle($event, handleChange)"
-      @reset="reset" />
+      @reset="reset" ref="searchInput" :value="searchTerm" />
     <ui-collapse with-icon ripple class="collapse" v-model="expandedSections[0]" v-show="!isSearchState">
       <template #toggle>
         <div class="heading">Starred Modules ({{ starredModules.size }})</div>

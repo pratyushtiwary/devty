@@ -4,13 +4,15 @@ import useStorage from "@/hooks/useStorage";
 import useThrottle from "@/hooks/useThrottle";
 import { useRoutes } from "@/stores/routes";
 import { type Routes } from "@/types/route";
-import { onMounted, onUnmounted, onUpdated, ref, type Ref } from "vue";
-import { RouterLink, useRoute } from "vue-router";
+import { onMounted, onUnmounted, ref, type Ref } from "vue";
+import { onBeforeRouteUpdate, useRoute } from "vue-router";
 
 const storage = useStorage();
-const allRoutes: Routes = useRoutes().getRoutes();
+const routesState = useRoutes();
+const allRoutes: Routes = routesState.getRoutes();
 const routes: Ref<Routes> = ref(allRoutes);
 const starredModules = ref(new Set(storage.load("starredModules") || []));
+const searchTerm = ref("")
 // @ts-ignore
 const IS_ELECTRON = window.IS_ELECTRON;
 
@@ -35,23 +37,17 @@ function resetSearch() {
     routes.value = allRoutes;
 
 }
-onUpdated(() => {
-    currRoute.value = route.params.slug.toString();
+onBeforeRouteUpdate((e) => {
+    searchTerm.value = ""
+    currRoute.value = e.params.slug.toString();
+    setTimeout(() => {
+        routes.value = allRoutes;
+    })
 });
 
-function handleSearch(searchTerm: string) {
-    const all = Object.keys(allRoutes);
-    const regex = new RegExp(searchTerm.toLowerCase(), 'g');
-    let validRoutes: Routes = {};
-
-    all.forEach(e => {
-        validRoutes[e] = {
-            ...allRoutes[e],
-            visible: Boolean(allRoutes[e].name.toLowerCase().match(regex))
-        }
-    })
-
-    routes.value = validRoutes
+function handleSearch(term: string) {
+    searchTerm.value = term
+    routes.value = routesState.search(searchTerm.value)
 }
 
 function handleRouteChange() {
@@ -72,20 +68,19 @@ function handleRouteChange() {
         :style="IS_ELECTRON && 'height: calc(100vh - 48px)'">
         <ui-drawer-header>
             <ui-drawer-title class="colorText title">
-                <RouterLink to="/" class="homeLink">
+                <router-link to="/" class="homeLink">
                     <span>Devty</span>
-                </RouterLink>
+                </router-link>
                 <ui-icon-button icon="first_page" v-show="isMobile" @click="openDrawer = false"></ui-icon-button>
             </ui-drawer-title>
             <ui-drawer-subtitle class="colorText">Your go to place for dev utilities & tools.</ui-drawer-subtitle>
         </ui-drawer-header>
         <SearchInput placeholder="Search..." class="searchInput" @update:value="useThrottle($event, handleSearch)"
-            @reset="resetSearch" />
+            @reset="resetSearch" :value="searchTerm" />
         <ui-drawer-content>
             <ui-nav>
-                <RouterLink :to="'/' + route" class="link" v-for="(route, index) in Object.keys(routes)" :key="index"
-                    v-show="routes[route].visible !== false">
-                    <ui-nav-item :active="currRoute === route" class="colorText navItem" @click="handleRouteChange">
+                <router-link :to="'/' + route" class="link" v-for="(route, index) in Object.keys(routes)" :key="index">
+                    <ui-nav-item :active="currRoute === route" class="colorText navItem" @click="handleRouteChange" href="">
                         <ui-icon class="icon" v-if="routes[route].icon">{{ routes[route].icon }}</ui-icon>
                         <img v-if="routes[route].image" :src="routes[route].image" :alt="routes[route].name + '\'s icon'"
                             class="image" />
@@ -94,7 +89,7 @@ function handleRouteChange() {
                         <ui-icon class="icon" v-if="starredModules.has(route)"
                             title="Starred Module, unstar from homepage">favorite</ui-icon>
                     </ui-nav-item>
-                </RouterLink>
+                </router-link>
                 <div v-if="Object.keys(routes).filter(e => routes[e].visible !== false).length === 0" class="noResults">
                     No Result Found!
                 </div>

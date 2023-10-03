@@ -5,12 +5,16 @@ import OutputOptions from "@/components/OutputOptionsComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
 import { useSnackbar } from "@/stores/snackbar";
 import type BalmUIFile from "@/types/file";
-import { ref, type Ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import convert from ".";
 
 const value: Ref<string> = ref("# Heading")
 const output: Ref<string> = ref('')
 const snackbar = useSnackbar()
+
+onMounted(async () => {
+    await process()
+})
 
 async function process() {
     output.value = await convert(value.value)
