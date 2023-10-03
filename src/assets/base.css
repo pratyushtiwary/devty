@@ -36,7 +36,9 @@
 
   --title-background: var(--vt-c-black-soft);
 
-  --color-borer: var(--color-text);
+  --color-border: var(--color-text);
+
+  --color-outline: var(--vt-c-text-dark-2);
 
   --scroll-background: #eee;
   --scroll-foreground: #333333;

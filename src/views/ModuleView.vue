@@ -1,14 +1,16 @@
 <script setup lang="ts">
+import CommandPallet from "@/components/CommandPalletComponent.vue";
 import Header from "@/components/HeaderComponent.vue";
 import LoadModule from "@/components/LoadModuleComponent.vue";
 import { useRoutes } from '@/stores/routes';
 import { type Route } from '@/types/route';
-import { onMounted, onUpdated, ref, type Ref } from 'vue';
+import { onMounted, onUnmounted, onUpdated, ref, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const router = useRouter();
 const route = useRoute();
 const routes = useRoutes();
+const showCommandPallet = ref<boolean>(false);
 const slug: Ref<string> = ref(route.params.slug.toString());
 let routeDetails: Ref<Route | undefined> = ref(undefined);
 
@@ -43,8 +45,26 @@ onUpdated(() => {
 
 })
 
+function handleKeyPress(e: KeyboardEvent) {
+    const key = e.key || e.code || e.which || e.keyCode;
+
+    if ((key === 'P' || key === 'KeyP' || key == 80) && e.ctrlKey) {
+        e.preventDefault()
+        showCommandPallet.value = true;
+    }
+
+    if (key === 'Escape' || key === 27) {
+        showCommandPallet.value = false;
+    }
+}
+
 onMounted(() => {
     window.scrollTo(0, 0);
+    window.addEventListener('keydown', handleKeyPress)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeyPress)
 })
 </script>
 
@@ -52,6 +72,7 @@ onMounted(() => {
     <div class="main" v-if="routeDetails">
         <Header></Header>
         <LoadModule :dir="routeDetails.dir"></LoadModule>
+        <CommandPallet :show="showCommandPallet" @hide="showCommandPallet = false" />
     </div>
 </template>
 
