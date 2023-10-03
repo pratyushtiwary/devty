@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CommandPallet from "@/components/CommandPalletComponent.vue";
+import CommandPalette from "@/components/CommandPaletteComponent.vue";
 import Header from "@/components/HeaderComponent.vue";
 import LoadModule from "@/components/LoadModuleComponent.vue";
 import { useRoutes } from '@/stores/routes';
@@ -10,7 +10,7 @@ import { useRoute, useRouter } from 'vue-router';
 const router = useRouter();
 const route = useRoute();
 const routes = useRoutes();
-const showCommandPallet = ref<boolean>(false);
+const showCommandPalette = ref<boolean>(false);
 const slug: Ref<string> = ref(route.params.slug.toString());
 let routeDetails: Ref<Route | undefined> = ref(undefined);
 
@@ -50,11 +50,11 @@ function handleKeyPress(e: KeyboardEvent) {
 
     if ((key === 'P' || key === 'KeyP' || key == 80) && e.ctrlKey) {
         e.preventDefault()
-        showCommandPallet.value = true;
+        showCommandPalette.value = true;
     }
 
     if (key === 'Escape' || key === 27) {
-        showCommandPallet.value = false;
+        showCommandPalette.value = false;
     }
 }
 
@@ -72,7 +72,7 @@ onUnmounted(() => {
     <div class="main" v-if="routeDetails">
         <Header></Header>
         <LoadModule :dir="routeDetails.dir"></LoadModule>
-        <CommandPallet :show="showCommandPallet" @hide="showCommandPallet = false" />
+        <CommandPalette :show="showCommandPalette" @hide="showCommandPalette = false" />
     </div>
 </template>
 

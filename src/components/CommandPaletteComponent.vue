@@ -84,8 +84,8 @@ onUpdated(() => {
 })
 </script>
 <template>
-    <div class="command-pallet" v-show="$props.show">
-        <div class="pallet">
+    <div class="command-palette" v-show="$props.show">
+        <div class="palette">
             <Input :autoFocus="true" ref="input" :value="searchTerm" @update:value="useThrottle($event, search, 500)"
                 placeholder="Search..." />
             <div class="results" ref="resultsRef">
@@ -95,12 +95,12 @@ onUpdated(() => {
                 </router-link>
             </div>
         </div>
-        <div class="overlay" @click="$emit('hide')" title='Click to hide command pallet'></div>
+        <div class="overlay" @click="$emit('hide')" title='Click to hide command palette'></div>
     </div>
 </template>
 
 <style>
-.command-pallet {
+.command-palette {
     position: fixed;
     top: 0;
     left: 0;
@@ -110,7 +110,7 @@ onUpdated(() => {
     overflow-y: auto;
 }
 
-.command-pallet .pallet {
+.command-palette .palette {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -123,7 +123,7 @@ onUpdated(() => {
     backdrop-filter: blur(5px);
 }
 
-.command-pallet .pallet .input {
+.command-palette .palette .input {
     position: sticky;
     top: 0;
     width: 100%;
@@ -141,7 +141,7 @@ onUpdated(() => {
     cursor: pointer;
 }
 
-.command-pallet .results .result {
+.command-palette .results .result {
     display: block;
     padding: 10px;
     color: var(--color-text);
