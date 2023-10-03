@@ -32,17 +32,19 @@ Devty doesn't have any backend, it uses browser APIs and libraries to provide to
 
 **Devty doesn't have any backend and is a frontend specific app. No data is ever sent to the backend**
 
-## How can I add my custom module?
+## Documentation
 
-Please read the [`Adding Custom Modules`](docs/ADDING_CUSTOM_MODULE.md) section in `docs`
+If you're interested in contributing or adding a custom module to Devty, you can find detailed documentation in the "docs" folder of this repository. The documentation provides guidelines on how to get started, how to create custom modules, and how to contribute to the project.
 
-## Attribution
+Feel free to explore the documentation and get involved in making Devty even better!
 
-This project uses [`DevUtils`](https://devutils.com) as inspiration.
+You can also refer to the "docs" folder directly [here](/docs).
+
+
 
 ## 🤝 Contributing
 
-Contributions to EthUnwrapped are welcome! If you would like to contribute, please follow these steps:
+Contributions to Devty are welcome! If you would like to contribute, please follow these steps:
 
 1. Fork the repository.
 2. Create a new branch:
@@ -68,5 +70,8 @@ Contributions to EthUnwrapped are welcome! If you would like to contribute, plea
     <img src="https://contrib.rocks/image?repo=pratyushtiwary/devty" />
   </a>
 </div>
+
+## Attribution
+This project uses [`DevUtils`](https://devutils.com) as inspiration.
 
 
