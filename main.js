@@ -38,7 +38,7 @@ const createWindow = () => {
     callback({
       responseHeaders: {
         ...details.responseHeaders,
-        'Content-Security-Policy': ["default-src 'self' 'unsafe-eval' data:"]
+        'Content-Security-Policy': ["default-src 'self' 'unsafe-eval' data: blob:"]
       }
     })
   })
