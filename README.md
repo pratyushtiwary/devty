@@ -38,7 +38,7 @@ Please read the [`Adding Custom Modules`](docs/ADDING_CUSTOM_MODULE.md) section 
 
 
 
-## 🤝 Contributing
+##🤝 Contributing
 
 Contributions to Devty are welcome! If you would like to contribute, please follow these steps:
 
@@ -57,6 +57,10 @@ Contributions to Devty are welcome! If you would like to contribute, please foll
    ```
 5. Open a pull request.
 
+
+### How can I add my custom module?
+
+Please read the [`Adding Custom Modules`](docs/ADDING_CUSTOM_MODULE.md) section in `docs`
 
 
 ## Community
