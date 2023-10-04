@@ -38,7 +38,7 @@ Please read the [`Adding Custom Modules`](docs/ADDING_CUSTOM_MODULE.md) section 
 
 
 
-##🤝 Contributing
+## 🤝 Contributing
 
 Contributions to Devty are welcome! If you would like to contribute, please follow these steps:
 
