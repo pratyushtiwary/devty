@@ -38,7 +38,7 @@
 
   --color-border: var(--color-text);
 
-  --color-outline: var(--vt-c-text-dark-2);
+  --color-outline: lightgreen;
 
   --scroll-background: #eee;
   --scroll-foreground: #333333;

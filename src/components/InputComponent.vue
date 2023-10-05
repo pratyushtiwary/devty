@@ -2,7 +2,7 @@
 import { useSnackbar } from '@/stores/snackbar';
 import { ref } from 'vue';
 const props = defineProps(['label', 'placeholder', 'inputType', 'value', 'disabled', 'allowCopy', 'error', 'helper']);
-defineEmits(['update:value']);
+defineEmits(['update:value', 'focus']);
 
 const snackbar = useSnackbar();
 const wrapper = ref();
@@ -22,7 +22,7 @@ defineExpose({
 <template>
     <ui-textfield outlined :input-type="inputType || 'text'" :class="'input ' + $attrs.class" :label="label"
         :placeholder="placeholder" :model-value="value" :disabled="disabled"
-        @update:model-value="$emit('update:value', $event)" ref="wrapper">
+        @update:model-value="$emit('update:value', $event)" ref="wrapper" @focus="$emit('focus')">
         <template #after v-if="Boolean(allowCopy)">
             <ui-textfield-icon @click="copyContent">content_copy</ui-textfield-icon>
         </template>
