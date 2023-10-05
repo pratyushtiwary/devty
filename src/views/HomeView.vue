@@ -53,8 +53,7 @@ const starModule = (e: Event, moduleId: any) => {
 
 function handleKeyPress(e: KeyboardEvent) {
   const key = e.key || e.code || e.which || e.keyCode;
-
-  if ((key === 'P' || key === 'KeyP' || key == 80) && e.ctrlKey) {
+  if ((key === 'p' || key === 'P' || key === 'KeyP' || key == 80) && e.ctrlKey) {
     e.preventDefault()
     if (searchInput?.value?.wrapper?.wrapper?.textfield?.querySelector) {
       searchInput.value.wrapper!.wrapper!.textfield!.querySelector('input')!.focus()

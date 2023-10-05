@@ -87,7 +87,7 @@ onUpdated(() => {
     <div class="command-palette" v-show="$props.show">
         <div class="palette">
             <Input :autoFocus="true" ref="input" :value="searchTerm" @update:value="useThrottle($event, search, 500)"
-                placeholder="Search..." />
+                placeholder="Search..." @focus="focusSearch" />
             <div class="results" ref="resultsRef">
                 <router-link :to="result" @click="$emit('hide')" class="result"
                     v-for="result, index in Object.keys(results)" :key="index">
@@ -150,6 +150,11 @@ onUpdated(() => {
     border: 1px solid var(--color-border);
     margin: 5px 0;
     border-radius: 2.5px;
-    outline: 1px solid var(--color-outline);
+    outline: 1px solid transparent;
+}
+
+.command-palette .results .result:focus {
+    border-color: var(--color-outline);
+    outline-color: var(--color-outline);
 }
 </style>
