@@ -60,6 +60,7 @@
     "electron-is-dev": "^2.0.0",
     "highlight.js": "^11.8.0",
     "jose": "^4.14.4",
+    "js-yaml": "^4.1.0",
     "marked": "^7.0.2",
     "marked-highlight": "^2.0.4",
     "moment": "^2.29.4",
