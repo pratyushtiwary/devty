@@ -4,12 +4,14 @@ import InputOptions from "@/components/InputOptionsComponent.vue";
 import StyledInput from "@/components/StyledInputComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
 import { ref, type Ref , watch} from "vue";
-import {jsonToYaml, yamlToJson} from ".";
+import {jsonToYaml, yamlToJson, jsonToCsv, csvToJson} from ".";
+
+type objectOrString = Object | string; 
 
 const inputType = ref('json');
 const inputText: Ref<string> = ref('');
 const outputType = ref('yaml');
-const outputText: Ref<object | string> = ref('');
+const outputText: Ref<objectOrString> = ref('');
 
 function clear() {
     inputText.value = " ";
@@ -31,6 +33,12 @@ watch([inputType, outputType], ([newInputType, newOutputType]) => {
   } else if (newInputType === 'yaml' && newOutputType === 'json') {
     // Call yamlToJson and update the outputText
     outputText.value = yamlToJson(inputText.value);
+  } else if (newInputType === 'json' && newOutputType === 'csv') {
+    // Call jsonTocsv and update the outputText
+    outputText.value = jsonToCsv(inputText.value);
+  }  else if (newInputType === 'csv' && newOutputType === 'json') {
+    // Call jsonTocsv and update the outputText
+    outputText.value = csvToJson(inputText.value);
   }
 });
 
@@ -45,7 +53,6 @@ watch([inputType, outputType], ([newInputType, newOutputType]) => {
         <option value="json">JSON</option>
         <option value="yaml">YAML</option>
         <option value="csv">CSV</option>
-        <option value="php">PHP</option>
       </select>
       <InputOptions label="Input Text:" @paste="handlePasteText" @reset="clear" :hideReset="false" :hideCopy="true" />
             <Input input-type="textarea" placeholder="Enter Content..." :value="inputText" class="inputElem" @update:value="useThrottle($event, handleInputChange)"/>
@@ -59,7 +66,6 @@ watch([inputType, outputType], ([newInputType, newOutputType]) => {
         <option value="json">JSON</option>
         <option value="yaml">YAML</option>
         <option value="csv">CSV</option>
-        <option value="php">PHP</option>
       </select>
       <InputOptions label="Output Text:" :hideClipboard="true" :hideReset="true" :copyContent="outputText" />
             <Input input-type="textarea" disabled placeholder="Results will appear here" class="no-resize inputText grow" :value="outputText"></Input>
