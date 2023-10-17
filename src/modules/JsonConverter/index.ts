@@ -9,53 +9,36 @@ const yamlSettings = {
     }
 }
 
-function escapeSpecialChars(input: string): string {
-    return input.replace(/\\n/g, "\\n")
-                .replace(/\\'/g, "\\'")
-                .replace(/\\"/g, '\\"')
-                .replace(/\\&/g, "\\&")
-                .replace(/\\r/g, "\\r")
-                .replace(/\\t/g, "\\t")
-                .replace(/\\b/g, "\\b")
-                .replace(/\\f/g, "\\f");
-}
-
-export function jsonToYaml(jsonObject: string): string {
+export function jsonToYaml(jsonString: string): string {
     try { 
-        const jsonObject2 = JSON.parse(jsonObject);
-        const yamlString = yaml.dump(jsonObject2, yamlSettings)
+        const jsonObject = JSON.parse(jsonString);
+        const yamlString = yaml.dump(jsonObject, yamlSettings)
         return yamlString;
     } catch (e) {
         console.log("Error converting JSON to YAML", e);
         return "There was an error"; 
-        
     }
 }
-
 
 export function yamlToJson(yamlObject: any): string {
     try { 
         const jsonObject = yaml.load(yamlObject);
         const jsonString = `${JSON.stringify(jsonObject, null, 2)}`
-       
-        const jsonString2 = escapeSpecialChars(jsonString)
-        
         return jsonString;
     } catch (e) {
         console.log("Error converting YAML to JSON", e);
         return "There was an error"; 
-        
     }
 }
 
-export function jsonToCsv(jsonObject: string): string {
+export function jsonToCsv(jsonString: string): string {
     try {
-        const jsonObject2 = JSON.parse(jsonObject);
-        const csvObject = papa.unparse(jsonObject2);
+        const jsonObject = JSON.parse(jsonString);
+        const csvObject = papa.unparse(jsonObject);
         return csvObject; 
     } catch (e) {
         console.log("Error converting JSON to CSV", e); 
-        return "there was an error";
+        return "There was an error";
     }
 }
 
@@ -63,16 +46,16 @@ export function csvToJson(csvData: string): string {
     try {
         
         const jsonObject = papa.parse(csvData, {
-            header: true,
+            header: false,
             skipEmptyLines: true,
+            footer: false,
         });
-        var jsonString = `${JSON.stringify(jsonObject, null, 2)}`;
-
-        jsonString = escapeSpecialChars(jsonString);
+        const cleanJsonObject = jsonObject.data;
+        var jsonString = `${JSON.stringify(cleanJsonObject, null, 2)}`;
         return jsonString; 
     } catch (e) {
-        console.log("Error converting JSON to CSV", e); 
-        return "there was an error";
+        console.log("Error converting CSV to JSON", e); 
+        return "There was an error";
     }
 }
 

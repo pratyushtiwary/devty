@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import Input from "@/components/InputComponent.vue";
 import InputOptions from "@/components/InputOptionsComponent.vue";
-import StyledInput from "@/components/StyledInputComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
 import { ref, type Ref , watch} from "vue";
 import {jsonToYaml, yamlToJson, jsonToCsv, csvToJson} from ".";
 
 type objectOrString = Object | string; 
 
-const inputType = ref('json');
+const inputType = ref('Select Input Type');
 const inputText: Ref<string> = ref('');
-const outputType = ref('yaml');
+const outputType = ref('Select Output Type');
 const outputText: Ref<objectOrString> = ref('');
 
 function clear() {
@@ -39,6 +38,12 @@ watch([inputType, outputType], ([newInputType, newOutputType]) => {
   }  else if (newInputType === 'csv' && newOutputType === 'json') {
     // Call jsonTocsv and update the outputText
     outputText.value = csvToJson(inputText.value);
+  } else if (newInputType === 'yaml' && newOutputType === 'csv') {
+    outputText.value = 'Cannot convert Yaml to CSV'
+  }  else if (newInputType === 'csv' && newOutputType === 'yaml') {
+    outputText.value = 'Cannot convert CSV to Yaml'
+  }   else if (newInputType === 'json' && newOutputType === 'json') {
+    outputText.value = 'Input object is already in JSON'
   }
 });
 
