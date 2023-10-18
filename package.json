@@ -51,7 +51,9 @@
   "dependencies": {
     "@highlightjs/vue-plugin": "^2.1.0",
     "@types/dompurify": "^3.0.2",
+    "@types/js-yaml": "^4.0.8",
     "@types/marked": "^5.0.1",
+    "@types/papaparse": "^5.3.10",
     "balm-ui": "^10.22.3",
     "crypto-js": "^4.1.1",
     "curlconverter": "^4.8.0",
