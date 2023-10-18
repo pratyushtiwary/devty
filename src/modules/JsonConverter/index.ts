@@ -42,14 +42,14 @@ export function jsonToCsv(jsonString: string): string {
     }
 }
 
-export function csvToJson(csvData: string): string {
+export function csvToJson(csvData: any): string {
     try {
         
         const jsonObject = papa.parse(csvData, {
             header: false,
             skipEmptyLines: true,
-            footer: false,
         });
+        
         const cleanJsonObject = jsonObject.data;
         var jsonString = `${JSON.stringify(cleanJsonObject, null, 2)}`;
         return jsonString; 
