@@ -24,14 +24,14 @@ export default {
   },
   methods: {
     minifyCode() {
-      minify(this.inputCode).then((result)=>{
+      minify(this.inputCode).then((result: any)=>{
         this.minifiedCode = result.code
       }).catch(()=>{
         this.minifiedCode = "Check your code for errors."
       })
     },
-    adjustTextarea(event) {
-      const textarea = event.target
+    adjustTextarea(event: Event) {
+      const textarea = event.target as HTMLInputElement
       textarea.style.height = 'auto'
       textarea.style.height = textarea.scrollHeight + 'px'
     }
