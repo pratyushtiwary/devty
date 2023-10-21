@@ -40,6 +40,11 @@ const routes: Routes = {
         "name": "HTML Preview",
         "icon": "code"
     },
+    "js_minifier": {
+        "dir": "JsMinifier",
+        "name": "Javascript Minifier",
+        "icon": "javascript"
+    },
     "json_formatter": {
         "dir": "JsonFormatter",
         "name": "JSON Formatter",
