@@ -68,6 +68,7 @@
     "pinia": "^2.1.4",
     "qr-scanner": "^1.4.2",
     "qrcode": "^1.5.3",
+    "terser": "^5.22.0",
     "vue": "^3.3.4",
     "vue-accessible-color-picker": "^4.1.4",
     "vue-router": "^4.2.4"
@@ -79,6 +80,7 @@
     "@types/diff": "^5.0.3",
     "@types/node": "^18.17.19",
     "@types/qrcode": "^1.5.2",
+    "@types/uglify-js": "^3.17.3",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vue/eslint-config-prettier": "^8.0.0",
     "@vue/eslint-config-typescript": "^11.0.3",
@@ -89,6 +91,7 @@
     "eslint-plugin-vue": "^9.15.1",
     "prettier": "^3.0.0",
     "typescript": "~5.1.6",
+    "uglify-js": "^3.17.4",
     "vite": "^4.4.6",
     "vite-plugin-node-polyfills": "^0.14.0",
     "vite-plugin-pwa": "^0.16.5",
