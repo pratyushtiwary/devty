@@ -1,22 +1,22 @@
 <template>
   <div class="container">
     <h1>JavaScript Minifier</h1>
-    <textarea
-      v-model="inputCode"
-      placeholder="Enter your JavaScript code"
-      class="inputText"
-      @input="adjustTextarea"
-    ></textarea>
-    <button @click="minifyCode">Minify</button>
+    <Input input-type="textarea" placeholder="Enter content to minify..." class="inputText" label="Input"
+                :value="inputCode" @update:value="handleUpdate"></Input>
+    
     <h2>Minified Code:</h2>
-    <p class="minifiedOutput">{{ minifiedCode }}</p>
+    <Output class="minifiedOutput" :label="minifiedCode" />
+    
   </div>
 </template>
 
 <script lang="ts">
 import {minify} from "terser";
+import Input from "../../components/InputComponent.vue";
+import Output from "../../components/OutputOptionsComponent.vue";
+
 export default {
-  data() {
+  data: () => {
     return {
       inputCode: '',
       minifiedCode: ''
@@ -34,7 +34,19 @@ export default {
       const textarea = event.target as HTMLInputElement
       textarea.style.height = 'auto'
       textarea.style.height = textarea.scrollHeight + 'px'
+    },
+    handleUpdate(newVal: any) {
+      this.inputCode = newVal;
+      minify(this.inputCode).then((result: any)=>{
+        this.minifiedCode = result.code
+      }).catch(()=>{
+        this.minifiedCode = "Check your code for errors."
+      })      
     }
+  },
+  components: {
+    Input,
+    Output
   }
 }
 </script>
@@ -50,14 +62,14 @@ export default {
 .inputText {
   width: 100%;
   flex-grow: 1;
-  resize: vertical; /* Allow vertical resizing */
-  min-height: 100px; /* Set a minimum height */
+  resize: vertical; 
+  min-height: 100px; 
 }
 
 .minifiedOutput {
-  width: 100%; /* Set the width to 100% of the container */
-  white-space: pre-wrap; /* Wrap long lines */
+  width: 100%; 
+  white-space: pre-wrap; 
 }
 
-/* Add your other CSS styles here if needed */
+
 </style>
