@@ -5,10 +5,10 @@ import useThrottle from "@/hooks/useThrottle";
 import { useRoutes } from "@/stores/routes";
 import { useSnackbar } from '@/stores/snackbar';
 import { type NestedComponentRef } from '@/types/componentRef';
+import { type MenuItem } from '@/types/menuItem';
 import { onMounted, onUnmounted, ref } from "vue";
 import { RouterLink } from "vue-router";
 const snackbarStore = useSnackbar();
-
 const routesState = useRoutes();
 const allRoutes = routesState.getRoutes();
 const routes = ref(allRoutes);
@@ -16,23 +16,31 @@ const isSearchState = ref(false);
 const searchTerm = ref("");
 const searchInput = ref<NestedComponentRef>();
 const storage = useStorage();
-const starredModules = ref(new Set(storage.load("starredModules") || []));
-const expandedSections = ref([true, true]);
+const deletedModules = ref<Set<string>>(new Set(storage.load("deletedModules") || []));
+const starredModules = ref<Set<string>>(new Set(storage.load("starredModules") || []));
+const expandedSections = ref([true, true, false]);
+const showOptions = ref(false);
+const optionsMenuPosition = ref<{ top: number, left: number }>({
+  top: 0,
+  left: 0
+});
+const selectedModuleId = ref<string | null>(null);
 
 function handleChange(newVal: string) {
   searchTerm.value = newVal;
+  expandedSections.value[1] = true;
   routes.value = routesState.search(newVal)
   isSearchState.value = true;
 }
 
 function reset() {
-  routes.value = allRoutes;
+  routes.value = routesState.getRoutes();
   isSearchState.value = false;
 
 }
 
 const starModule = (e: Event, moduleId: any) => {
-  e.preventDefault();
+  if (e) e.preventDefault();
   try {
     starredModules.value = new Set(starredModules.value);
     if (!starredModules.value.has(moduleId)) {
@@ -49,6 +57,54 @@ const starModule = (e: Event, moduleId: any) => {
       snackbarStore.show(`Failed to save details! Error: ${e.message}`, 'error')
     }
   }
+}
+
+const deleteModule = (e: Event, moduleId: any) => {
+  if (e) e.preventDefault();
+  try {
+    deletedModules.value = new Set(deletedModules.value);
+    if (!deletedModules.value.has(moduleId)) {
+      deletedModules.value.add(moduleId);
+    } else {
+      deletedModules.value.delete(moduleId);
+    }
+    storage.save('deletedModules', Array.from(deletedModules.value));
+    routes.value = routesState.getRoutes();
+  } catch (e) {
+    if (e instanceof Error) {
+      snackbarStore.show(`Failed to delete module! Error: ${e.message}`, 'error')
+    }
+  }
+}
+
+function openOptions(e: Event, id: string) {
+  e.preventDefault();
+  showOptions.value = true;
+  const { top, left } = (e.target as Element).getBoundingClientRect();
+  optionsMenuPosition.value = {
+    top: window.scrollY + top,
+    left: window.scrollX + left
+  };
+  selectedModuleId.value = id;
+}
+
+function performAction(menuItem: MenuItem) {
+  const moduleId = selectedModuleId.value;
+  switch (menuItem.text) {
+    case 'Star Module':
+    case 'Unstar Module':
+      starModule(null, moduleId)
+      break;
+    case 'Remove':
+    case 'Restore':
+      deleteModule(null, moduleId)
+      break;
+  }
+}
+
+function closeOptions() {
+  selectedModuleId.value = null;
+  showOptions.value = false;
 }
 
 function handleKeyPress(e: KeyboardEvent) {
@@ -85,19 +141,20 @@ onUnmounted(() => {
       @reset="reset" ref="searchInput" :value="searchTerm" />
     <ui-collapse with-icon ripple class="collapse" v-model="expandedSections[0]" v-show="!isSearchState">
       <template #toggle>
-        <div class="heading">Starred Modules ({{ starredModules.size }})</div>
+        <div class="heading">Starred Modules ({{ Array.from(starredModules).filter(route =>
+          !deletedModules.has(route)).length }})</div>
       </template>
       <div class="modules">
-        <div v-if="starredModules.size === 0" class="noModules">
+        <div v-if="Array.from(starredModules).filter(route => !deletedModules.has(route)).length === 0" class="noModules">
           No Starred Module Found!
         </div>
-        <ui-card class="module" outlined v-for="( route, index ) in  Array.from(starredModules) " :key="index"
-          v-show="routes[route].visible !== false">
+        <ui-card class="module" outlined
+          v-for="( route, index ) in  Array.from(starredModules).filter(route => !deletedModules.has(route))"
+          :key="index">
           <RouterLink :to="'/' + route" class="link">
             <ui-card-content class="content" :title="'Click to open ' + routes[route].name + ' module'">
-              <ui-icon-button :title="(starredModules.has(route) ? 'Unstar' : 'Star') + ' Module'"
-                :icon="starredModules.has(route) ? 'favorite' : 'favorite_border'" class="star"
-                @click="starModule($event, route)"></ui-icon-button>
+              <ui-icon-button title="More Options" class="options" icon="more_vert"
+                @click="openOptions($event, route)"></ui-icon-button>
               <ui-icon v-if="routes[route].icon" class="icon">{{ routes[route].icon }}</ui-icon>
               <img v-if="routes[route].image" :src="routes[route].image" :alt="routes[route].name + '\'s icon'"
                 class="image" />
@@ -109,15 +166,15 @@ onUnmounted(() => {
     </ui-collapse>
     <ui-collapse with-icon ripple class="collapse" v-model="expandedSections[1]">
       <template #toggle>
-        <div class="heading">All Modules</div>
+        <div class="heading">All Modules ({{ Object.keys(routes).length }})</div>
       </template>
       <div class="modules">
         <ui-card class="module" outlined v-for="( route, index ) in  Object.keys(routes) " :key="index"
           v-show="routes[route].visible !== false">
           <RouterLink :to="'/' + route" class="link">
             <ui-card-content class="content" :title="'Click to open ' + routes[route].name + ' module'">
-              <ui-icon-button title="Star Module" :icon="starredModules.has(route) ? 'favorite' : 'favorite_border'"
-                class="star" @click="starModule($event, route)"></ui-icon-button>
+              <ui-icon-button title="Options" class="options" icon="more_vert"
+                @click="openOptions($event, route)"></ui-icon-button>
               <ui-icon v-if="routes[route].icon" class="icon">{{ routes[route].icon }}</ui-icon>
               <img v-if="routes[route].image" :src="routes[route].image" :alt="routes[route].name + '\'s icon'"
                 class="image" />
@@ -127,6 +184,49 @@ onUnmounted(() => {
         </ui-card>
       </div>
     </ui-collapse>
+    <ui-collapse with-icon ripple class="collapse" v-model="expandedSections[2]" v-show="!isSearchState">
+      <template #toggle>
+        <div class="heading">Deleted Modules ({{ deletedModules.size }})</div>
+      </template>
+      <div class="modules">
+        <div v-if="deletedModules.size === 0" class="noModules">
+          No Deleted Module Found!
+        </div>
+        <ui-card class="module deleted" outlined v-for="( route, index ) in  Array.from(deletedModules) " :key="index">
+          <RouterLink to="#" class="link deleted">
+            <ui-card-content class="content deleted">
+              <ui-icon-button title="More Options" class="options" icon="more_vert"
+                @click="openOptions($event, route)"></ui-icon-button>
+              <ui-icon v-if="routesState.routes[route].icon" class="icon">{{ routesState.routes[route].icon }}</ui-icon>
+              <img v-if="routesState.routes[route].image" :src="routesState.routes[route].image"
+                :alt="routesState.routes[route].name + '\'s icon'" class="image" />
+              <h3 class="heading">{{ routesState.routes[route].name }}</h3>
+            </ui-card-content>
+          </RouterLink>
+        </ui-card>
+      </div>
+    </ui-collapse>
+    <ui-menu-anchor class="menu-anchor" :style="{
+      top: optionsMenuPosition.top + 'px',
+      left: optionsMenuPosition.left + 'px'
+    }">
+      <ui-menu v-model="showOptions" @selected="performAction" @closed="closeOptions">
+        <ui-menuitem v-if="!deletedModules.has(selectedModuleId)">
+          <ui-menuitem-icon>
+            <ui-icon>{{ starredModules.has(selectedModuleId) ? 'favorite' : 'favorite_border' }}</ui-icon>
+          </ui-menuitem-icon>
+          <ui-menuitem-text>{{ starredModules.has(selectedModuleId) ? 'Unstar Module' : 'Star Module'
+          }}</ui-menuitem-text>
+        </ui-menuitem>
+        <ui-menuitem>
+          <ui-menuitem-icon>
+            <ui-icon>{{ deletedModules.has(selectedModuleId) ? 'restore_from_trash' : 'delete' }}</ui-icon>
+          </ui-menuitem-icon>
+          <ui-menuitem-text>{{ deletedModules.has(selectedModuleId) ? 'Restore' : 'Remove' }}</ui-menuitem-text>
+        </ui-menuitem>
+      </ui-menu>
+    </ui-menu-anchor>
+
     <div v-if="Object.keys(routes).filter(e => routes[e].visible !== false).length === 0" class="noResults">
       No Module Found!
     </div>
@@ -160,6 +260,10 @@ main {
 .modules .module {
   background-color: var(--color-background);
   margin: 5px;
+}
+
+.modules .deleted {
+  cursor: no-drop !important;
 }
 
 .modules .module .content {
@@ -208,10 +312,14 @@ main {
   font-size: 24px;
 }
 
-.star {
+.options {
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 5px;
+}
+
+.menu-anchor {
+  position: absolute;
 }
 
 .collapse {
