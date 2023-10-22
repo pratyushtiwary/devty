@@ -1,6 +1,6 @@
 import useStorage from '@/hooks/useStorage'
 import routes from '@/routes'
-import { type Routes } from '@/types/route'
+import { type Route, type Routes } from '@/types/route'
 import { defineStore } from 'pinia'
 
 const storage = useStorage()
@@ -17,7 +17,8 @@ export const useRoutes = defineStore('routes', {
         return deleted_routes.includes(slug)
       },
     getRoute(state) {
-      return (slug: string) => (this.isDeleted(slug) ? null : state.routes[slug])
+      return (slug: string): Route | undefined =>
+        this.isDeleted(slug) ? undefined : state.routes[slug]
     },
     getRoutes(state) {
       return (): Routes =>

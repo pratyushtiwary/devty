@@ -39,7 +39,7 @@ function reset() {
 
 }
 
-const starModule = (e: Event, moduleId: any) => {
+const starModule = (e: Event | null, moduleId: any) => {
   if (e) e.preventDefault();
   try {
     starredModules.value = new Set(starredModules.value);
@@ -59,7 +59,7 @@ const starModule = (e: Event, moduleId: any) => {
   }
 }
 
-const deleteModule = (e: Event, moduleId: any) => {
+const deleteModule = (e: Event | null, moduleId: any) => {
   if (e) e.preventDefault();
   try {
     deletedModules.value = new Set(deletedModules.value);
@@ -211,18 +211,18 @@ onUnmounted(() => {
       left: optionsMenuPosition.left + 'px'
     }">
       <ui-menu v-model="showOptions" @selected="performAction" @closed="closeOptions">
-        <ui-menuitem v-if="!deletedModules.has(selectedModuleId)">
+        <ui-menuitem v-if="!deletedModules.has(selectedModuleId || '')">
           <ui-menuitem-icon>
-            <ui-icon>{{ starredModules.has(selectedModuleId) ? 'favorite' : 'favorite_border' }}</ui-icon>
+            <ui-icon>{{ starredModules.has(selectedModuleId || '') ? 'favorite' : 'favorite_border' }}</ui-icon>
           </ui-menuitem-icon>
-          <ui-menuitem-text>{{ starredModules.has(selectedModuleId) ? 'Unstar Module' : 'Star Module'
+          <ui-menuitem-text>{{ starredModules.has(selectedModuleId || '') ? 'Unstar Module' : 'Star Module'
           }}</ui-menuitem-text>
         </ui-menuitem>
         <ui-menuitem>
           <ui-menuitem-icon>
-            <ui-icon>{{ deletedModules.has(selectedModuleId) ? 'restore_from_trash' : 'delete' }}</ui-icon>
+            <ui-icon>{{ deletedModules.has(selectedModuleId || '') ? 'restore_from_trash' : 'delete' }}</ui-icon>
           </ui-menuitem-icon>
-          <ui-menuitem-text>{{ deletedModules.has(selectedModuleId) ? 'Restore' : 'Remove' }}</ui-menuitem-text>
+          <ui-menuitem-text>{{ deletedModules.has(selectedModuleId || '') ? 'Restore' : 'Remove' }}</ui-menuitem-text>
         </ui-menuitem>
       </ui-menu>
     </ui-menu-anchor>
