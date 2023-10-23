@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SearchInput from "@/components/SearchInputComponent.vue";
+import useMediaQuery from "@/hooks/useMediaQuery";
 import useStorage from "@/hooks/useStorage";
 import useThrottle from "@/hooks/useThrottle";
 import { useRoutes } from "@/stores/routes";
@@ -8,6 +9,7 @@ import { type NestedComponentRef } from '@/types/componentRef';
 import { type MenuItem } from '@/types/menuItem';
 import { onMounted, onUnmounted, ref } from "vue";
 import { RouterLink } from "vue-router";
+
 const snackbarStore = useSnackbar();
 const routesState = useRoutes();
 const allRoutes = routesState.getRoutes();
@@ -25,6 +27,7 @@ const optionsMenuPosition = ref<{ top: number, left: number }>({
   left: 0
 });
 const selectedModuleId = ref<string | null>(null);
+const smallScreen = useMediaQuery("(max-width: 800px)");
 
 function handleChange(newVal: string) {
   searchTerm.value = newVal;
@@ -206,11 +209,11 @@ onUnmounted(() => {
         </ui-card>
       </div>
     </ui-collapse>
-    <ui-menu-anchor class="menu-anchor" :style="{
-      top: optionsMenuPosition.top + 'px',
-      left: optionsMenuPosition.left + 'px'
-    }">
-      <ui-menu v-model="showOptions" @selected="performAction" @closed="closeOptions">
+    <ui-menu-anchor class="menu-anchor" :style="smallScreen ? {
+      bottom: 0,
+      left: '50%'
+    } : { top: optionsMenuPosition.top + 'px', left: optionsMenuPosition.left + 'px' }">
+      <ui-menu v-model="showOptions" @selected="performAction" @closed="closeOptions" class="menu" :aria-role="smallScreen && 'dialog'">
         <ui-menuitem v-if="!deletedModules.has(selectedModuleId || '')">
           <ui-menuitem-icon>
             <ui-icon>{{ starredModules.has(selectedModuleId || '') ? 'favorite' : 'favorite_border' }}</ui-icon>
@@ -225,8 +228,8 @@ onUnmounted(() => {
           <ui-menuitem-text>{{ deletedModules.has(selectedModuleId || '') ? 'Restore' : 'Remove' }}</ui-menuitem-text>
         </ui-menuitem>
       </ui-menu>
+      <div class="menu-opacity" v-if="smallScreen" v-show="showOptions"></div>
     </ui-menu-anchor>
-
     <div v-if="Object.keys(routes).filter(e => routes[e].visible !== false).length === 0" class="noResults">
       No Module Found!
     </div>
@@ -325,5 +328,31 @@ main {
 .collapse {
   width: 100%;
   margin-top: 5px;
+}
+
+@media screen and (max-width: 800px) {
+  .menu-anchor {
+    position: fixed;
+    z-index: 9999;
+  }
+
+  .menu-anchor .menu-opacity {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(var(--color-background-rgb), 0.75);
+    z-index: 1;
+  }
+
+  .menu-anchor .menu {
+    position: absolute;
+    width: 100vw;
+    max-width: 97.5vw;
+    transform: translate(-50%);
+    border-radius: 10px 10px 0 0;
+    z-index: 2;
+  }
 }
 </style>
