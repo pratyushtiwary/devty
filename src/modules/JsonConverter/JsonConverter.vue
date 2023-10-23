@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import Input from "@/components/InputComponent.vue";
 import InputOptions from "@/components/InputOptionsComponent.vue";
 import useThrottle from "@/hooks/useThrottle";
@@ -7,9 +8,9 @@ import {jsonToYaml, yamlToJson, jsonToCsv, csvToJson} from ".";
 
 type objectOrString = Object | string; 
 
-const inputType = ref('Select Input Type');
+const inputType = ref('');
 const inputText: Ref<string> = ref('');
-const outputType = ref('Select Output Type');
+const outputType = ref('');
 const outputText: Ref<objectOrString> = ref('');
 
 function clear() {
@@ -24,28 +25,63 @@ function handleInputChange(newVal: string){
     inputText.value = newVal;
 }
 
+const options = [
+  {
+    label: 'JSON',
+    value: 'json'
+  },
+  {
+    label: 'YAML',
+    value: 'yaml'
+  },
+  {
+    label: 'CSV',
+    value: 'csv'
+  },
+]
 
-watch([inputType, outputType], ([newInputType, newOutputType]) => {
-  if (newInputType === 'json' && newOutputType === 'yaml') {
-    // Call jsonToYaml and update the outputText
+
+function handleConversion(newVal: string){
+  inputText.value = newVal;
+
+  if (inputType.value == 'json' && outputType.value == 'yaml') {
+    
     outputText.value = jsonToYaml(inputText.value);
-  } else if (newInputType === 'yaml' && newOutputType === 'json') {
-    // Call yamlToJson and update the outputText
+
+  } else if (inputType.value === 'yaml' && outputType.value === 'json') {
+    
     outputText.value = yamlToJson(inputText.value);
-  } else if (newInputType === 'json' && newOutputType === 'csv') {
-    // Call jsonTocsv and update the outputText
+
+  } else if (inputType.value === 'json' && outputType.value === 'csv') {
+   
     outputText.value = jsonToCsv(inputText.value);
-  }  else if (newInputType === 'csv' && newOutputType === 'json') {
-    // Call jsonTocsv and update the outputText
+
+  }  else if (inputType.value === 'csv' && outputType.value === 'json') {
+    
     outputText.value = csvToJson(inputText.value);
-  } else if (newInputType === 'yaml' && newOutputType === 'csv') {
+
+  } else if (inputType.value === 'yaml' && outputType.value === 'csv') {
+    
     outputText.value = 'Cannot convert Yaml to CSV'
-  }  else if (newInputType === 'csv' && newOutputType === 'yaml') {
+
+  }  else if (inputType.value === 'csv' && outputType.value === 'yaml') {
+    
     outputText.value = 'Cannot convert CSV to Yaml'
-  }   else if (newInputType === 'json' && newOutputType === 'json') {
+
+  }   else if (inputType.value === 'json' && outputType.value === 'json') {
+    
     outputText.value = 'Input object is already in JSON'
+
+  }   else if (inputType.value === 'csv' && outputType.value === 'csv') {
+    
+    outputText.value = 'Input object is already in CSV'
+
+  }   else if (inputType.value === 'yaml' && outputType.value === 'yaml') {
+    
+    outputText.value = 'Input object is already in Yaml'
+    
   }
-});
+}
 
 </script>
 
@@ -53,25 +89,32 @@ watch([inputType, outputType], ([newInputType, newOutputType]) => {
 <template>
     <div class="container">
     <div class="expression">
-      <label for="inputType">Input Type:</label>
-      <select id="inputType" v-model="inputType">
-        <option value="json">JSON</option>
-        <option value="yaml">YAML</option>
-        <option value="csv">CSV</option>
-      </select>
+      <section>
+        <ui-select
+          id="inputType"
+          v-model="inputType"
+          :options="options"
+        >
+          Input Type
+        </ui-select>
+      </section>
+
       <InputOptions label="Input Text:" @paste="handlePasteText" @reset="clear" :hideReset="false" :hideCopy="true" />
-            <Input input-type="textarea" placeholder="Enter Content..." :value="inputText" class="inputElem" @update:value="useThrottle($event, handleInputChange)"/>
+            <Input input-type="textarea" placeholder="Enter Content..." :value="inputText" class="inputElem" @update:value="useThrottle($event, handleConversion)"/>
     </div>
 
         
         
       <div class="output">
-      <label for="outputType">Output Type:</label>
-      <select id="outputType" v-model="outputType">
-        <option value="json">JSON</option>
-        <option value="yaml">YAML</option>
-        <option value="csv">CSV</option>
-      </select>
+      <section>
+        <ui-select
+          id="outputType"
+          v-model="outputType"
+          :options="options"
+        >
+          Output Type
+        </ui-select>
+      </section>
       <InputOptions label="Output Text:" :hideClipboard="true" :hideReset="true" :copyContent="outputText" />
             <Input input-type="textarea" disabled placeholder="Results will appear here" class="no-resize inputText grow" :value="outputText"></Input>
     </div>
