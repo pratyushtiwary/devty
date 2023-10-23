@@ -40,6 +40,11 @@ const routes: Routes = {
         "name": "HTML Preview",
         "icon": "code"
     },
+    "json_converter": {
+        "dir": "JsonConverter",
+        "name": "Json Converter",
+        "icon": "sync_alt"
+    },
     "json_formatter": {
         "dir": "JsonFormatter",
         "name": "JSON Formatter",
