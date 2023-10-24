@@ -213,7 +213,8 @@ onUnmounted(() => {
       bottom: 0,
       left: '50%'
     } : { top: optionsMenuPosition.top + 'px', left: optionsMenuPosition.left + 'px' }">
-      <ui-menu v-model="showOptions" @selected="performAction" @closed="closeOptions" class="menu" :aria-role="smallScreen && 'dialog'">
+      <ui-menu v-model="showOptions" @selected="performAction" @closed="closeOptions" class="menu"
+        :aria-role="smallScreen && 'dialog'">
         <ui-menuitem v-if="!deletedModules.has(selectedModuleId || '')">
           <ui-menuitem-icon>
             <ui-icon>{{ starredModules.has(selectedModuleId || '') ? 'favorite' : 'favorite_border' }}</ui-icon>
@@ -350,6 +351,7 @@ main {
     position: absolute;
     width: 100vw;
     max-width: 97.5vw;
+    left: 0;
     transform: translate(-50%);
     border-radius: 10px 10px 0 0;
     z-index: 2;
