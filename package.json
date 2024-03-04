@@ -84,7 +84,7 @@
     "@vue/eslint-config-typescript": "^11.0.3",
     "@vue/tsconfig": "^0.4.0",
     "electron": "^26.2.4",
-    "electron-builder": "^24.6.4",
+    "electron-builder": "^24.13.3",
     "eslint": "^8.45.0",
     "eslint-plugin-vue": "^9.15.1",
     "prettier": "^3.0.0",
