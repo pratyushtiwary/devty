@@ -1,6 +1,11 @@
 {
   "include": ["env.d.ts", "global.d.ts", "src/**/*", "src/**/*.vue"],
   "files": [],
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
   "references": [
     {
       "path": "./tsconfig.node.json"

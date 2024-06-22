@@ -226,3 +226,11 @@ pre code.hljs {
 .mdc-button--outlined:not(:disabled) {
     border-color: var(--color-border) !important;
 }
+
+.mdc-menu-surface {
+    background-color: var(--color-background) !important;
+}
+
+.material-icons {
+    color: var(--color-text) !important;
+}
