@@ -3,7 +3,7 @@ import { ref, shallowRef, watchEffect } from 'vue';
 const props = defineProps(['dir']);
 
 const loading = ref(false);
-const Module = shallowRef(undefined);
+const Module = shallowRef<any>(undefined);
 
 watchEffect(async () => {
     loading.value = true;
