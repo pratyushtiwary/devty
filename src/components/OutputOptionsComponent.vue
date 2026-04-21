@@ -4,8 +4,13 @@ const props = defineProps(['label', 'copyContent', 'hideCopy']);
 
 const snackbar = useSnackbar();
 
-function copy() {
-    navigator.clipboard.writeText(props.copyContent);
+async function copy() {
+    const clipboardItemData = {
+        "text/plain": props.copyContent,
+        "text/html": props.copyContent
+    };
+    const clipboardItem = new ClipboardItem(clipboardItemData);
+    await navigator.clipboard.write([clipboardItem]);
 
     snackbar.show('Content copied to clipboard', 'success');
 }
