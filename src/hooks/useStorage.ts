@@ -1,5 +1,5 @@
 const storageHandler = {
-  load(key: string, autoParse = true) {
+  load(key: string, autoParse = true): any {
     try {
       let content = localStorage.getItem(key)
       if (content === 'undefined') {
